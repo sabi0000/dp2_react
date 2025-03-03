@@ -57,6 +57,16 @@ const Neurons = () => {
                         Biologické neuróny
                     </Typography>
                 </Card>
+
+                <Card sx={{ p: 4, bgcolor: "#666", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
+                    <Typography variant="h4" gutterBottom>
+                        Ukážka biologického neurónu
+                    </Typography>
+                    <video width="100%" controls>
+                        <source src="http://127.0.0.1:5000/video/bio_neuron" type="video/mp4" />
+                        Váš prehliadač nepodporuje prehrávanie videa.
+                    </video>
+                </Card>
                 
                 <Card sx={{ p: 4, bgcolor: "#555", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                     <Typography variant="h5" gutterBottom>

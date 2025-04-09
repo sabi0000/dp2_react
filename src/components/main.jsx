@@ -44,11 +44,12 @@ const Home = () => {
                 Your browser does not support the video tag.
             </video>
 
-            {/* Menu */}
-            <Box sx={{ position: "absolute", top: 10, left: 10 }}>
+{/* Ikona menu a nadpis vedľa nej */}
+<Box sx={{ position: "absolute", top: 10, left: 10, display: "flex", alignItems: "center" }}>
                 <IconButton onClick={handleClick} sx={{ color: "white" }}>
                     <MenuIcon />
                 </IconButton>
+                <Typography variant="h6" sx={{ marginLeft: 1, color: "white" }}>Menu</Typography>
                 <Menu
                     anchorEl={anchorEl}
                     open={open}

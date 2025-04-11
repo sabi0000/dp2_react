@@ -22,9 +22,12 @@ const Networks = () => {
         handleClose();
     };
 
+    const [error, setError] = useState(false);
+    const [errorNeurons, setErrorNeurons] = useState(false);
+
     const [networkVideo, setNetworkVideo] = useState("");
-    const [networkLayers, setNetworkLayers] = useState(1);
-    const [networkNeurons, setNetworkNeurons] = useState(2);
+    const [networkLayers, setNetworkLayers] = useState("");
+    const [networkNeurons, setNetworkNeurons] = useState("");
     const [isLoading, setIsLoading] = useState(false); // Loading state
 
     const [accVideo, setAccVideo] = useState("");
@@ -41,7 +44,7 @@ const Networks = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ layers: networkLayers, neurons: networkNeurons }),
             });
-            alert("Threshold hodnoty uložené.");
+            alert("Hodnoty uložené.");
         } catch (error) {
             console.error("Chyba:", error);
         }
@@ -82,6 +85,7 @@ const Networks = () => {
         .finally(() => {
             setIsLoading(false); // Set loading to false after rendering
         });
+        alert("Renderovanie začalo.");
     };
 
     const handleMetricsRendering = async () => {
@@ -116,7 +120,7 @@ const Networks = () => {
     const showNetworkVideo = () => {
         setTimeout(() => {
             setNetworkVideo("http://127.0.0.1:5000/video/neural_network");
-        }, 5000);
+        }, 5);
     };
 
     const showAccVideo = () => {
@@ -132,8 +136,9 @@ const Networks = () => {
     };
 
     return (
+        
         <Box sx={{ bgcolor: "black", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "white", textAlign: "center", p: 4 }}>
-            <Box sx={{ position: "absolute", top: 10, left: 10 }}>
+            <Box sx={{ position: "absolute", top: 10, left: 10, display: "flex", alignItems: "center" }}>
                 <IconButton onClick={handleClick} sx={{ color: "white" }}>
                     <MenuIcon />
                 </IconButton>
@@ -146,33 +151,108 @@ const Networks = () => {
                 >
                     <MenuItem onClick={() => handleNavigate("/")}>Hlavná stránka</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/neurons")}>Neuróny</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/functions")}>Aktivačné funkcie</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/networks")}>Neurónové siete</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/edge-detection")}>Detekcia hrán</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/edge-detection-2")}>Detekcia hrán 2</MenuItem>
                 </Menu>
             </Box>
             <Container maxWidth="md">
-                <Card sx={{ p: 4, bgcolor: "#333", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
-                    <Typography variant="h4" gutterBottom>
+                <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>  
+                    <Typography
+                        variant="h3"
+                        gutterBottom
+                        sx={{
+                            color: "#00bcd4",
+                            fontWeight: "bold"
+                            }}
+                    >
                         Neurónové siete
                     </Typography>
                     <Typography variant="body1" paragraph>
-                        Nejaký text.
+                    Neurónové siete sú výpočtové modely inšpirované štruktúrou a funkciou ľudského mozgu. Skladajú sa z prepojených uzlov, nazývaných neuróny, ktoré spracúvajú a prenášajú informácie.
                     </Typography>
                 </Card>
+                <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
+                    <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
+                        Paralely s ľudským mozgom
+                    </Typography>
+                        <video width="100%" autoPlay loop muted>
+                            <source src="http://127.0.0.1:5000/video/brain" type="video/mp4" />
+                                Váš prehliadač nepodporuje prehrávanie videa.
+                        </video>
+                        <Typography variant="body1" paragraph>
+                        Rovnako ako ľudský mozog, aj neurónové siete sú tvorené sieťou prepojených jednotiek.<br />
+                        Ľudský mozog sa učí posilňovaním alebo oslabovaním synaptických spojení.<br />
+                        Neurónové siete sa učia úpravou váh medzi neurónmi počas tréningu.<br />
+                        Mozog spracúva informácie paralelne, čo mu umožňuje rýchlo riešiť komplexné problémy.<br />
+                        Neurónové siete tiež spracúvajú informácie paralelne, čo ich robí efektívnymi pre úlohy ako rozpoznávanie obrazu a spracovanie prirodzeného jazyka.<br />
+                        </Typography>
+                    </Card>
 
-                <Card sx={{ p: 4, bgcolor: "#444", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
-                    <Typography variant="h5" gutterBottom>
-                        <Grid item xs={6}> 
+                    <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
+                    <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
+                        Ako fungujú neurónové siete?
+                    </Typography>
+                        <video width="100%" autoPlay loop muted>
+                            <source src="http://127.0.0.1:5000/video/networks_example" type="video/mp4" />
+                                Váš prehliadač nepodporuje prehrávanie videa.
+                        </video>
+                        <Typography variant="body1" paragraph>
+                        Neurónové siete sú organizované do vrstiev: vstupná vrstva, skryté vrstvy a výstupná vrstva..<br />
+                        Vstupná vrstva: Prijíma surové dáta, ako sú pixely obrázka alebo slová v texte, a prenáša ich do siete.<br />
+                        Skryté vrstvy: Spracúvajú a transformujú vstupné dáta, extrahujú zložité vzory a reprezentácie.<br />
+                        Výstupná vrstva: Generuje konečný výstup siete, ako sú predikcie alebo klasifikácie.<br />
+                        </Typography>
+                    </Card>
+
+                    <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
+                    <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
+                        Vytvorenie vlastnej neurónovej siete
+                    </Typography>
+
+                    <Typography variant="body1" paragraph>
+                    Táto aplikácia umožňuje užívateľovi definovať architektúru neurónovej siete podľa vlastných potrieb. Zadávajú sa počty neurónov v jednotlivých vrstvách a celkový počet vrstiev. Táto flexibilita umožňuje experimentovať s rôznymi konfiguráciami a nájsť optimálnu sieť pre danú úlohu.
+                    </Typography>
+
+                    <Typography variant="body1" paragraph align="left">
+                    <strong>Počet vrstiev:</strong> Určuje hĺbku siete a jej schopnosť modelovať komplexné vzory. Viac vrstiev môže viesť k lepším výsledkom, ale aj k vyššej výpočtovej náročnosti. <br />
+                    <strong>Počet neurónov v každej vrstve:</strong> Ovplyvňuje kapacitu siete a jej schopnosť učiť sa z dát. Príliš málo neurónov môže viesť k nedostatočnému učeniu, zatiaľ čo príliš veľa neurónov môže viesť k preučeniu.
+                    </Typography>
+
+                    <Typography variant="h5" sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
+                     Parametre neurónovej siete
+                    </Typography>
+                    <Typography variant="h5" gutterBottom paragraph sx={{ mt: 2 }}>
+                        <Grid item xs={12}> 
                             <TextField
                                 fullWidth
                                 label="Neural Network Layers"
                                 type="number"
                                 value={networkLayers}
-                                onChange={(e) => setNetworkLayers(parseInt(e.target.value))}
-                                placeholder="Zadajte číslo"    
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    setNetworkLayers(value);
+                                    setError(value < 1 || value > 6);
+                                  }}
+                                  error={error}
+                                  helperText={error ? "Hodnota musí byť medzi 1 a 6" : " "}
+                                  
+                                  inputProps={{
+                                    min: 1,
+                                    max: 10,
+                                    style: {
+                                      color: "white",
+                                      backgroundColor: "#222", // Tmavé pozadie iba pre samotný input
+                                      borderRadius: "4px",
+                                    },
+                                  }}
+                                placeholder="Zadajte počet vrstiev od 1 po 6"    
+
                                 sx={{
+                                    mt: 5,
                                     input: { color: "white" },
-                                    bgcolor: "#222",
+                                    bgcolor: "#111",
                                     borderRadius: 1,
                                     mb: 4,
                                     "& .MuiOutlinedInput-root": {
@@ -188,16 +268,32 @@ const Networks = () => {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={6}> 
+                        <Grid item xs={12}> 
                             <TextField
                                 fullWidth
                                 label="Neural Network Neurons"
                                 type="number"
                                 value={networkNeurons}
-                                onChange={(e) => setNetworkNeurons(parseInt(e.target.value))}
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                      setNetworkNeurons(value);
+                                      setErrorNeurons(value < 2 || value > 8); // nastaví error stav   
+                                  }}
+                                error={errorNeurons}
+                                helperText={errorNeurons ? "Hodnota musí byť medzi 2 a 8" : " "}
+                                inputProps={{
+                                    min: 1,
+                                    max: 10,
+                                    style: {
+                                      color: "white",
+                                      backgroundColor: "#222", // Tmavé pozadie iba pre samotný input
+                                      borderRadius: "4px",
+                                    },
+                                  }}
+                                placeholder="Zadajte počet neurónov od 2 po 8"  
                                 sx={{
                                     input: { color: "white" },
-                                    bgcolor: "#222",
+                                    bgcolor: "#111",
                                     borderRadius: 1,
                                     "& .MuiOutlinedInput-root": {
                                         "& fieldset": { borderColor: "#555" },
@@ -214,7 +310,14 @@ const Networks = () => {
                         </Grid>
                     </Typography>
 
-                    <Button onClick={handleNetworkSubmit} variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+                    <Button 
+                        onClick={handleNetworkSubmit} 
+                        variant="contained" 
+                        color="primary" 
+                        fullWidth 
+                        sx={{ mt: 3 }} 
+                        disabled={error || errorNeurons}
+                    >
                         Upload network parameters
                     </Button>
                     

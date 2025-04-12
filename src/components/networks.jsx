@@ -39,7 +39,8 @@ const Networks = () => {
     const handleNetworkSubmit = async (event) => {
         event.preventDefault();
         try {
-            await fetch("http://127.0.0.1:5000/set_neural_network", {
+            const backendUrl = `http://${window.location.hostname}:5000/set_neural_network`;
+            await fetch(backendUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ layers: networkLayers, neurons: networkNeurons }),
@@ -53,7 +54,8 @@ const Networks = () => {
     const handleMetricsSubmit = async (event) => {
         event.preventDefault();
         try {
-            await fetch("http://127.0.0.1:5000/set_metrics", {
+            const backendUrlMetrics = `http://${window.location.hostname}:5000/set_metrics`;
+            await fetch(backendUrlMetrics, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ layers_m: networkLayers_m, neurons_m: networkNeurons_m, epochs_m:networkEpochs_m }),
@@ -67,7 +69,8 @@ const Networks = () => {
     const handleNetworkRendering = async () => {
         setIsLoading(true); // Set loading to true
         setNetworkVideo(null);
-        fetch("http://127.0.0.1:5000/network_rendering", {
+        const backendUrlnetworkRendering = `http://${window.location.hostname}:5000/network_rendering`;
+        fetch(backendUrlnetworkRendering, {
             method: "POST",
             credentials: "include",
         })
@@ -94,7 +97,8 @@ const Networks = () => {
         setValVideo(null);
     
         try {
-            const res = await fetch("http://127.0.0.1:5000/acc_rendering", {
+            const backendUrlaccRendering = `http://${window.location.hostname}:5000/acc_rendering`;
+            const res = await fetch(backendUrlaccRendering, {
                 method: "POST",
                 credentials: "include",
             });
@@ -119,29 +123,66 @@ const Networks = () => {
     
     const showNetworkVideo = () => {
         setTimeout(() => {
-            setNetworkVideo("http://127.0.0.1:5000/video/neural_network");
+            const backendUrlNetworkVideo = `http://${window.location.hostname}:5000/video/neural_network`;
+            setNetworkVideo(backendUrlNetworkVideo);
         }, 5);
     };
 
     const showAccVideo = () => {
         setTimeout(() => {
-            setAccVideo("http://127.0.0.1:5000/video/acc");
-        }, 5000);
+            const backendUrlacc = `http://${window.location.hostname}:5000/video/acc`;
+            setAccVideo(backendUrlacc);
+        }, 1);
     };
 
     const showValVideo = () => {
         setTimeout(() => {
-            setValVideo("http://127.0.0.1:5000/video/val");
-        }, 5000);
+            const backendUrlval = `http://${window.location.hostname}:5000/video/val`;
+            setValVideo(backendUrlval);
+        }, 1);
     };
 
     return (
+        <Box
+            sx={{
+                position: "relative",
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+                textAlign: "center",
+                paddingTop: "60px"
+            }}
+        >
+
         
-        <Box sx={{ bgcolor: "black", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "white", textAlign: "center", p: 4 }}>
+            <video 
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    zIndex: -1
+                }}
+            >
+                <source src="background3.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+        
+        
             <Box sx={{ position: "absolute", top: 10, left: 10, display: "flex", alignItems: "center" }}>
                 <IconButton onClick={handleClick} sx={{ color: "white" }}>
                     <MenuIcon />
                 </IconButton>
+                <Typography variant="h6" sx={{ marginLeft: 1, color: "white" }}>Menu</Typography>
                 <Menu
                     anchorEl={anchorEl}
                     open={open}
@@ -178,7 +219,7 @@ const Networks = () => {
                         Paralely s ľudským mozgom
                     </Typography>
                         <video width="100%" autoPlay loop muted>
-                            <source src="http://127.0.0.1:5000/video/brain" type="video/mp4" />
+                            <source src={`http://${window.location.hostname}:5000/video/brain`} type="video/mp4" />
                                 Váš prehliadač nepodporuje prehrávanie videa.
                         </video>
                         <Typography variant="body1" paragraph>
@@ -195,7 +236,7 @@ const Networks = () => {
                         Ako fungujú neurónové siete?
                     </Typography>
                         <video width="100%" autoPlay loop muted>
-                            <source src="http://127.0.0.1:5000/video/networks_example" type="video/mp4" />
+                            <source src={`http://${window.location.hostname}:5000/video/networks_example`} type="video/mp4" />
                                 Váš prehliadač nepodporuje prehrávanie videa.
                         </video>
                         <Typography variant="body1" paragraph>
@@ -350,17 +391,62 @@ const Networks = () => {
                     )}
                 </Card>
 
-                <Card sx={{ p: 4, bgcolor: "#333", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
-                    <Typography variant="h4" gutterBottom>
-                        Metriky
+                <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
+                    <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
+                        Riziko preučenia (overfitting):
                     </Typography>
-                    <Typography variant="body1" paragraph>
-                        Nejaký text.
+                    <Typography variant="body1" paragraph align="left">
+                        Pri návrhu architektúry siete je dôležité zvážiť riziko preučenia. Preučenie nastáva, keď sa sieť príliš dobre naučí trénovacie dáta a stráca schopnosť generalizovať na nové, neznáme dáta.<br/>
+                        Pri používaní tejto aplikácie je dôležité experimentovať s rôznymi parametrami a sledovať výkon siete, aby sa našla optimálna architektúra pre danú úlohu.
                     </Typography>
                 </Card>
 
-                <Card sx={{ p: 4, bgcolor: "#444", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
-                <Typography variant="h5" gutterBottom>
+                <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
+                    <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
+                        Metriky výkonu a rozdelenie dát
+                    </Typography>
+                    <Typography variant="body1" paragraph>
+                        Pri tréningu neurónových sietí je kľúčové sledovať rôzne metriky, aby sme pochopili, ako dobre sa sieť učí a ako generalizuje na nové dáta.<br/>
+                        Okrem toho je dôležité správne rozdeliť dáta na trénovaciu a validačnú sadu, aby sme mohli objektívne hodnotiť výkon modelu.
+                    </Typography>
+
+                    <Typography variant="h5" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
+                        Metriky výkonu
+                    </Typography>
+
+                    <Typography variant="body1" paragraph align="left">
+                        <strong>Presnosť (Accuracy):</strong> Meria, koľko predikcií modelu je správnych.<br/>
+                        <strong>Strata (Loss):</strong> Meria, ako dobre model predpovedá výstupy, nižšia strata znamená lepší výkon modelu.<br/>
+                        <strong>Validačná presnosť (Validation Accuracy):</strong> Meria presnosť modelu na validačnej sade dát, používa sa na monitorovanie generalizačnej schopnosti modelu a na detekciu preučenia.<br/>
+                        <strong>Validačná strata (Validation Loss):</strong> Meria stratu modelu na validačnej sade dát, používa sa na monitorovanie generalizačnej schopnosti modelu a na detekciu preučenia.
+                    </Typography>
+
+                    <Typography variant="h5" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
+                        Rozdelenie dát
+                    </Typography>
+
+                    <Typography variant="body1" paragraph align="left">
+                        <strong>Trénovacia sada (Training Set):</strong> Model sa z týchto dát učí. Predtavujú väčšinu datasetu. Zvyčajne okolo 75 % dát. <br/>
+                        <strong>Validačná sada (Validation Set):</strong> Používa sa na monitorovanie výkonu modelu počas tréningu. Slúži na detegovanie preučenia. Tvoria zhruba 25 % datasetu<br/>
+                    </Typography>
+
+                </Card>
+
+                <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
+                <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
+                    Priebeh tréningu: Vizualizácia a analýza tréningu neurónových sietí
+                </Typography>
+                    <Typography variant="body1" paragraph align="left">
+                        <strong>Navrhnite svoju sieť:</strong> Zadajte, koľko vrstiev a neurónov chcete použiť.<br/>
+                        <strong>Sledujte tréning v reálnom čase:</strong> Sledujte, ako sa vaša sieť učí, vďaka prehľadným grafom strát a presností.<br/>
+                        <strong>Analyzujte a optimalizujte: </strong> Zistite, či sa vaša sieť učí správne, alebo či sa nepreučuje. Upravte parametre a sledujte, ako sa zlepšuje.<br/>
+                        <strong>Epochy pod kontrolou:</strong> Sledujte, ako sa mení výkon vašej siete v závislosti od počtu epoch, a nájdite optimálny počet pre vašu úlohu.<br/>
+                        Epocha je jeden kompletný prechod trénovacích dát cez neurónovú sieť, pričom sledovanie zmien v stratách a presnostiach počas epoch pomáha optimalizovať tréning a predchádzať preučeniu.
+                    </Typography>
+                    <Typography variant="h5" sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
+                     Parametre neurónovej siete
+                    </Typography>
+                <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
                         <Grid item xs={6}> 
                             <TextField
                                 fullWidth
@@ -387,7 +473,7 @@ const Networks = () => {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={6}> 
+                        <Grid item xs={6} sx={{ mt: 2 }}> 
                             <TextField
                                 fullWidth
                                 label="Metrics Network Neurons"
@@ -412,7 +498,7 @@ const Networks = () => {
                             />
                         </Grid>
 
-                        <Grid item xs={6}> 
+                        <Grid item xs={6} sx={{ mt: 6 }}> 
                             <TextField
                                 fullWidth
                                 label="Metrics Network Epochs"
@@ -483,6 +569,7 @@ const Networks = () => {
                 </Button>
             </Container>
         </Box>
+        
     );
 };
 

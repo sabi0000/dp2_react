@@ -165,8 +165,8 @@ const Functions = () => {
                     </Typography>
                     
                     <video width="100%" controls>
-                        <source src="http://127.0.0.1:5000/video/sigmoid" type="video/mp4" />
-                        Váš prehliadač nepodporuje prehrávanie videa.
+                        <source src={`http://${window.location.hostname}:5000/video/sigmoid`} type="video/mp4" />
+                            Váš prehliadač nepodporuje prehrávanie videa.
                     </video>
 
                     <Typography variant="body1" paragraph sx={{ mt: 2 }}>
@@ -216,8 +216,8 @@ const Functions = () => {
                     </Typography>
                     
                     <video width="100%" controls>
-                        <source src="http://127.0.0.1:5000/video/relu" type="video/mp4" />
-                        Váš prehliadač nepodporuje prehrávanie videa.
+                        <source src={`http://${window.location.hostname}:5000/video/relu`} type="video/mp4" />
+                            Váš prehliadač nepodporuje prehrávanie videa.
                     </video>
 
                     <Typography variant="body1" paragraph sx={{ mt: 2 }}>
@@ -267,8 +267,8 @@ const Functions = () => {
                     </Typography>
                     
                     <video width="100%" controls>
-                        <source src="http://127.0.0.1:5000/video/tanh" type="video/mp4" />
-                        Váš prehliadač nepodporuje prehrávanie videa.
+                        <source src={`http://${window.location.hostname}:5000/video/tanh`} type="video/mp4" />
+                            Váš prehliadač nepodporuje prehrávanie videa.
                     </video>
 
                     <Typography variant="body1" paragraph sx={{ mt: 2 }}>
@@ -318,7 +318,7 @@ const Functions = () => {
                     </Typography>
                     
                     <video width="100%" controls>
-                        <source src="http://127.0.0.1:5000/video/softmax" type="video/mp4" />
+                        <source src={`http://${window.location.hostname}:5000/video/softmax`} type="video/mp4" />
                         Váš prehliadač nepodporuje prehrávanie videa.
                     </video>
 

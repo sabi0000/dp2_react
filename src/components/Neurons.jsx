@@ -118,7 +118,7 @@ const Neurons = () => {
                         Ukážka biologického neurónu
                     </Typography>
                     <video width="100%" autoPlay loop muted>
-                        <source src="http://127.0.0.1:5000/video/bio_neuron" type="video/mp4" />
+                        <source src={`http://${window.location.hostname}:5000/video/bio_neuron`} type="video/mp4" />
                         Váš prehliadač nepodporuje prehrávanie videa.
                     </video>
                 </Card>
@@ -142,7 +142,7 @@ const Neurons = () => {
                         Ukážka matematického modelu neurónu
                     </Typography>
                     <video width="100%" autoPlay loop muted>
-                        <source src="http://127.0.0.1:5000/video/ai_neuron" type="video/mp4" />
+                    <source src={`http://${window.location.hostname}:5000/video/ai_neuron`} type="video/mp4" />
                         Váš prehliadač nepodporuje prehrávanie videa.
                     </video>
                 </Card>

@@ -403,6 +403,31 @@ const Networks = () => {
 
                 <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                     <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
+                    Epochy: Opakovanie je matka múdrosti
+                    </Typography>
+
+                    <Typography variant="body1" paragraph >
+                        Epocha je základný koncept v trénovaní neurónových sietí. Predstavuje jeden kompletný prechod celého trénovacieho datasetu cez neurónovú sieť.
+                    </Typography>
+
+                    <video width="100%" autoPlay loop muted>
+                            <source src={`http://${window.location.hostname}:5000/video/epochs`} type="video/mp4" />
+                                Váš prehliadač nepodporuje prehrávanie videa.
+                        </video>
+
+                    <Typography variant="body1" paragraph align="left">
+                        Počas jednej epochy sa sieť postupne pozerá na každý obrázok v tejto zbierke.<br/>
+                        Po každom obrázku upravuje svoje vnútorné nastavenia (váhy), aby sa zlepšila v rozpoznávaní.<br/>
+                        Keď sieť prejde cez všetky obrázky v zbierke, jedna epocha je dokončená.<br/>
+                        Počas každej epochy sa sieť postupne učí z trénovacích dát a upravuje svoje váhy, aby minimalizovala chyby.<br/>    
+                        Opakovaným prechádzaním dát sa sieť postupne zlepšuje v rozpoznávaní vzorov. <br/>  
+                        Príliš málo epoch môže viesť k nedostatočnému učeniu, zatiaľ čo príliš veľa epoch môže viesť k preučeniu (overfitting). <br/>  
+                        Správny počet epoch je kľúčový pre dosiahnutie optimálneho výkonu siete.
+                    </Typography>
+                </Card>
+
+                <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
+                    <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
                         Metriky výkonu a rozdelenie dát
                     </Typography>
                     <Typography variant="body1" paragraph>
@@ -441,7 +466,6 @@ const Networks = () => {
                         <strong>Sledujte tréning v reálnom čase:</strong> Sledujte, ako sa vaša sieť učí, vďaka prehľadným grafom strát a presností.<br/>
                         <strong>Analyzujte a optimalizujte: </strong> Zistite, či sa vaša sieť učí správne, alebo či sa nepreučuje. Upravte parametre a sledujte, ako sa zlepšuje.<br/>
                         <strong>Epochy pod kontrolou:</strong> Sledujte, ako sa mení výkon vašej siete v závislosti od počtu epoch, a nájdite optimálny počet pre vašu úlohu.<br/>
-                        Epocha je jeden kompletný prechod trénovacích dát cez neurónovú sieť, pričom sledovanie zmien v stratách a presnostiach počas epoch pomáha optimalizovať tréning a predchádzať preučeniu.
                     </Typography>
                     <Typography variant="h5" sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
                      Parametre neurónovej siete

@@ -63,6 +63,9 @@ const Home = () => {
                     <MenuItem onClick={() => handleNavigate("/networks")}>Neurónové siete</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/edge-detection")}>Detekcia hrán</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/edge-detection-2")}>Detekcia hrán 2</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/architecture")}>Architektúra</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/convolution")}>Konvolúcia</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/edges")}>Hrany</MenuItem>
                 </Menu>
             </Box>
             

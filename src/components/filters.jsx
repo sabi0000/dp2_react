@@ -4,14 +4,15 @@ import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
 import { RotatingLines } from 'react-loader-spinner'; // Import the loading spinner
 
-const Treshold= () => {
+const Filters= () => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
       const [file, setFile] = useState(null);
 
-      const [threshold, setThreshold] = useState();
-      const [tresholdVideo, setTresholdVideo] = useState("");
+      const [gaussSize, setGaussSize] = useState(5);
+      const [sigmaSize, setSigmaSize] = useState(1);
+      const [gaussVideo, setGaussVideo] = useState("");
 
       const [adaptive_treshold, setAdaptiveThreshold] = useState();
       const [constant, setConstant] = useState();
@@ -60,14 +61,14 @@ const Treshold= () => {
         }
       };
 
-      const handleTresholdSubmit = async (event) => {
+      const handleGaussSubmit = async (event) => {
         event.preventDefault();
         try {
-            const backendUrlTreshold = `http://${window.location.hostname}:5000/set_simple_treshold`;
-          const response = await fetch(backendUrlTreshold, {
+            const backendUrlGauss = `http://${window.location.hostname}:5000/set_gauss_size`;
+          const response = await fetch(backendUrlGauss, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ threshold: threshold }),
+            body: JSON.stringify({ gauss_size: gaussSize, sigma_size: sigmaSize }),
           });
     
           if (response.ok) {
@@ -95,11 +96,11 @@ const Treshold= () => {
         }
     };
          
-      const handleTresholdRendering = async () => {
-        setTresholdVideo(null);
+      const handleGaussRendering = async () => {
+        setGaussVideo(null);
         setIsLoading(true); 
-        const backendUrlTresholdRendering = `http://${window.location.hostname}:5000/simple_render`;
-        fetch(backendUrlTresholdRendering, {
+        const backendUrlGaussRendering = `http://${window.location.hostname}:5000/gauss_render`;
+        fetch(backendUrlGaussRendering, {
           method: "POST",
           credentials: "include",
         })
@@ -111,7 +112,7 @@ const Treshold= () => {
         })
         .then((data) => {
             console.log("Network response:", data);
-            showTresholdVideo(); // Call to show the video after rendering
+            showGaussVideo(); // Call to show the video after rendering
         })
         .catch((err) => console.error("Network error:", err))
         .finally(() => {
@@ -122,7 +123,7 @@ const Treshold= () => {
       };
     
       const handleAdaptiveRendering = async () => {
-        setTresholdVideo(null);
+
         setIsLoading(true); 
         const backendUrlAdaptRendering = `http://${window.location.hostname}:5000/adaptive_render`;
         fetch(backendUrlAdaptRendering, {
@@ -154,10 +155,10 @@ const Treshold= () => {
          
       };
 
-      const showTresholdVideo = () => {
-        const backendUrlTresholdShow = `http://${window.location.hostname}:5000/video/simple_treshold`;
+      const showGaussVideo = () => {
+        const backendUrlGaussShow = `http://${window.location.hostname}:5000/video/gauss`;
         
-          setTresholdVideo(backendUrlTresholdShow );
+          setGaussVideo(backendUrlGaussShow );
          
       };
 
@@ -230,7 +231,7 @@ const Treshold= () => {
                         fontWeight: "bold"
                       }}
                     >
-                    Prahovanie: Zjednodušenie snímok
+                    Filtre
                 </Typography>
                     <Typography variant="body1" paragraph>
                     V tejto sekcii preskúmame techniku prahovania, ktorá slúži na zjednodušenie obrazov premenou na binárnu formu – čiernu a bielu. Objavte, ako rôzne metódy prahovania môžu odhaliť skryté štruktúry a zvýrazniť dôležité informácie vo vašich obrázkoch.
@@ -239,7 +240,7 @@ const Treshold= () => {
 
                 <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                     <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>   
-                    Jednoduché prahovanie: Globálny pohľad
+                    Gaussov filter
                     </Typography>
 
                     <Typography variant="body1" paragraph>
@@ -259,7 +260,7 @@ const Treshold= () => {
 
                 <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                     <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>   
-                    Interaktívne prahovanie: Jednoduché prahovanie
+                    Interaktívne filtre: Gaussov filter
                     </Typography>
 
                     <Typography variant="body1" paragraph align="left">
@@ -283,13 +284,13 @@ const Treshold= () => {
 
                     <Grid container spacing={2}>
                     {/* Gauss Parameters */}
-                    <Grid item xs={6} sx={{ mt: 2 }}>
+                    <Grid item xs={12}> 
                         <TextField
                         fullWidth
-                        label="Prahová hodnota"
+                        label="Gauss size"
                         type="number"
-                        value={threshold}
-                        onChange={(e) => setThreshold(parseInt(e.target.value))}
+                        value={gaussSize}
+                        onChange={(e) => setGaussSize(parseInt(e.target.value))}
                         inputProps={{
                             min: 1,
                             max: 10,
@@ -299,7 +300,40 @@ const Treshold= () => {
                               borderRadius: "4px",
                             },
                           }}
-                        placeholder="Zadajte prahovú hodnotu"  
+                        placeholder="Zadajte gauss size"  
+                        sx={{
+                            input: { color: "white" },
+                            bgcolor: "#111",
+                            borderRadius: 1,
+                            mb:4,
+                            "& .MuiOutlinedInput-root": {
+                                "& fieldset": { borderColor: "#555" },
+                            }
+                        }}
+                        InputLabelProps={{
+                            sx: { 
+                                color: "white",
+                                fontSize: "1.2rem",
+                                transform: "translate(14px, -25px) scale(1)",
+                            }
+                        }}
+                        />
+                        <TextField
+                        fullWidth
+                        label="Sigma"
+                        type="number"
+                        value={sigmaSize}
+                        onChange={(e) => setSigmaSize(parseInt(e.target.value))}
+                        inputProps={{
+                            min: 1,
+                            max: 10,
+                            style: {
+                              color: "white",
+                              backgroundColor: "#222", // Tmavé pozadie iba pre samotný input
+                              borderRadius: "4px",
+                            },
+                          }}
+                        placeholder="Zadajte hodnotu sigma"  
                         sx={{
                             input: { color: "white" },
                             bgcolor: "#111",
@@ -321,7 +355,7 @@ const Treshold= () => {
                     
                     {/* Full-width Upload Gauss Button */}
                     <Grid item xs={12}>
-                        <Button onClick={handleTresholdSubmit} variant="contained" color="primary" fullWidth>
+                        <Button onClick={handleGaussSubmit} variant="contained" color="primary" fullWidth>
                         Upload Threshold
                         </Button>
                     </Grid>
@@ -330,11 +364,11 @@ const Treshold= () => {
                 
 
                     <Box sx={{ mt: 3 }}>
-                    <Button variant="contained" color="secondary" onClick={handleTresholdRendering} fullWidth >    
+                    <Button variant="contained" color="secondary" onClick={handleGaussRendering} fullWidth >    
                         Spustiť Rendering
                     </Button>
                     </Box>
-                    <Button onClick={showTresholdVideo} variant="contained" color="secondary" fullWidth sx={{ mt: 2 }}>
+                    <Button onClick={showGaussVideo} variant="contained" color="secondary" fullWidth sx={{ mt: 2 }}>
                     Show video
                     </Button>
                     {isLoading && ( // Show loading spinner while rendering
@@ -351,10 +385,10 @@ const Treshold= () => {
 
 
                     
-                    {tresholdVideo && (
+                    {gaussVideo && (
                     <Box sx={{ mt: 3 }}>
                         <video width="100%" controls>
-                        <source src={tresholdVideo} type="video/mp4" />
+                        <source src={gaussVideo} type="video/mp4" />
                         </video>
                     </Box>
                     )}
@@ -548,4 +582,4 @@ const Treshold= () => {
     );
 };
 
-export default Treshold;
+export default Filters;

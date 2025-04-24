@@ -12,6 +12,7 @@ import Convolution  from "./components/convolution";
 import ConvolutionCalculator  from "./components/calc";
 import Edges  from "./components/edges";
 import Treshold  from "./components/treshold";
+import Filters  from "./components/filters";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/calc" element={<ConvolutionCalculator />} />
         <Route path="/edges" element={<Edges />} />
         <Route path="/treshold" element={<Treshold />} />
+        <Route path="/filters" element={<Filters />} />
       </Routes>
     </Router>
   );

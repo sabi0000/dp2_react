@@ -72,8 +72,12 @@ const Neurons = () => {
                     <MenuItem onClick={() => handleNavigate("/neurons")}>Neuróny</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/functions")}>Aktivačné funkcie</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/networks")}>Neurónové siete</MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/edge-detection")}>Detekcia hrán</MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/edge-detection-2")}>Detekcia hrán 2</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/architecture")}>Architektúra</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/convolution")}>Konvolúcia</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/filters")}>Filtre</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovvanie</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/edges")}>Detekcia hrán</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/final")}>Klasifikácia</MenuItem>
                 </Menu>
             </Box>
 

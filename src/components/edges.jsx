@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
 import { RotatingLines } from 'react-loader-spinner'; // Import the loading spinner
+import UploadSection from './UploadSection';
 
 const Edges= () => {
     const navigate = useNavigate();
@@ -17,8 +18,21 @@ const Edges= () => {
       const [sobelVideo, setSobelVideo] = useState("");
       const [cannyVideo, setCannyVideo] = useState("");
       const [isLoading, setIsLoading] = useState(false); // Loading state
+      const [openPicker, setOpenPicker] = useState(false);
  
-
+ 
+      const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        console.log("Selected file:", selectedFile); // Pridajte tento riadok na kontrolu
+        setFile(selectedFile);
+    };
+      const handleDefaultImageSelect = async (imgPath) => {
+        const response = await fetch(imgPath);
+        const blob = await response.blob();
+        const file = new File([blob], "default.jpg", { type: blob.type });
+        setFile(file);
+        setOpenPicker(false);
+      }; 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -222,8 +236,12 @@ const Edges= () => {
                     <MenuItem onClick={() => handleNavigate("/neurons")}>Neuróny</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/functions")}>Aktivačné funkcie</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/networks")}>Neurónové siete</MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/edge-detection")}>Detekcia hrán</MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/edge-detection-2")}>Detekcia hrán 2</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/architecture")}>Architektúra</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/convolution")}>Konvolúcia</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/filters")}>Filtre</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovvanie</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/edges")}>Detekcia hrán</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/final")}>Klasifikácia</MenuItem>
                 </Menu>
             </Box>
 
@@ -297,15 +315,13 @@ const Edges= () => {
                     </Typography>
 
                     <Box component="form" onSubmit={handleFileUpload} sx={{ mb: 3 }}>
-                    <Typography variant="subtitle1">Vyberte obrázok:</Typography>
-                    <input
-                        type="file"
-                        onChange={(e) => setFile(e.target.files[0])}
-                        accept="image/*"
-                        required
-                        style={{ marginBottom: "10px" }}
+                    <UploadSection
+                    handleFileChange={handleFileChange}
+                    openPicker={openPicker}
+                    setOpenPicker={setOpenPicker}
+                    handleDefaultImageSelect={handleDefaultImageSelect}
                     />
-                    <Button type="submit" variant="contained" color="primary" fullWidth>Upload Image</Button>
+                    <Button variant="contained" color="secondary" onClick={handleFileUpload} fullWidth sx={{ mt: 2 }} >Nahrať obrázok </Button>
                     </Box>
 
                     <Grid container spacing={2}>
@@ -535,14 +551,13 @@ const Edges= () => {
 
                     <Box component="form" onSubmit={handleFileUpload} sx={{ mb: 3 }}>
                     <Typography variant="subtitle1">Vyberte obrázok:</Typography>
-                    <input
-                        type="file"
-                        onChange={(e) => setFile(e.target.files[0])}
-                        accept="image/*"
-                        required
-                        style={{ marginBottom: "10px" }}
+                    <UploadSection
+                    handleFileChange={handleFileChange}
+                    openPicker={openPicker}
+                    setOpenPicker={setOpenPicker}
+                    handleDefaultImageSelect={handleDefaultImageSelect}
                     />
-                    <Button type="submit" variant="contained" color="primary" fullWidth>Upload Image</Button>
+                    <Button variant="contained" color="secondary" onClick={handleFileUpload} fullWidth sx={{ mt: 2 }} >Nahrať obrázok </Button>
                     </Box>
 
                     <Grid container spacing={2}>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
 import { RotatingLines } from 'react-loader-spinner'; // Import the loading spinner
+import UploadSection from './UploadSection';
 
 const Filters= () => {
     const navigate = useNavigate();
@@ -10,19 +11,31 @@ const Filters= () => {
     const open = Boolean(anchorEl);
       const [file, setFile] = useState(null);
 
-      const [gaussSize, setGaussSize] = useState(5);
-      const [sigmaSize, setSigmaSize] = useState(1);
-      const [gaussVideo, setGaussVideo] = useState("");
+    const [gaussSize, setGaussSize] = useState(5);
+    const [sigmaSize, setSigmaSize] = useState(1);
+    const [gaussVideo, setGaussVideo] = useState("");
 
-      const [adaptive_treshold, setAdaptiveThreshold] = useState();
-      const [constant, setConstant] = useState();
-      const [adaptive_tresholdVideo, setAdaptiveTresholdVideo] = useState("");
+    const [ksize, setKsize] = useState(3);
+    const [medianVideo, setMedianVideo] = useState("");
 
-      const [isLoading, setIsLoading] = useState(false); // Loading state
+    const [openPicker, setOpenPicker] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false); // Loading state
  
     const [error, setError] = useState(false);
-    const [errorNeurons, setErrorNeurons] = useState(false);
 
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        console.log("Selected file:", selectedFile); // Pridajte tento riadok na kontrolu
+        setFile(selectedFile);
+    };
+    const handleDefaultImageSelect = async (imgPath) => {
+        const response = await fetch(imgPath);
+        const blob = await response.blob();
+        const file = new File([blob], "default.jpg", { type: blob.type });
+        setFile(file);
+        setOpenPicker(false);
+    };
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -80,21 +93,22 @@ const Filters= () => {
           console.error("Chyba:", error);
         }
       };
-    
-      const handleAdaptiveSumbmit = async (event) => {
+
+      const handleKsizeSubmit = async (event) => {
         event.preventDefault();
         try {
-            const backendUrlAdapt = `http://${window.location.hostname}:5000/set_adaptive_treshold`;
-            await fetch(backendUrlAdapt, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ adaptive_treshold: adaptive_treshold, constant: constant }),
-            });
-            alert("Hodnoty uložené.");
+            const backendUrlKSize = `http://${window.location.hostname}:5000/set_ksize`;
+          await fetch(backendUrlKSize, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ksize }),
+          });
+          alert("Kernel size uložené.");
         } catch (error) {
-            console.error("Chyba:", error);
+          console.error("Chyba:", error);
         }
-    };
+      };    
+
          
       const handleGaussRendering = async () => {
         setGaussVideo(null);
@@ -121,12 +135,12 @@ const Filters= () => {
         });
         alert("Renderovanie začalo.");
       };
-    
-      const handleAdaptiveRendering = async () => {
 
+      const handleMedianRendering = async () => {
+        setMedianVideo(null);
         setIsLoading(true); 
-        const backendUrlAdaptRendering = `http://${window.location.hostname}:5000/adaptive_render`;
-        fetch(backendUrlAdaptRendering, {
+        const backendUrlMedianRendering = `http://${window.location.hostname}:5000/median_render`;
+        fetch(backendUrlMedianRendering, {
           method: "POST",
           credentials: "include",
         })
@@ -138,7 +152,7 @@ const Filters= () => {
         })
         .then((data) => {
             console.log("Network response:", data);
-            showAdaptiveVideo(); // Call to show the video after rendering
+            showGaussVideo(); // Call to show the video after rendering
         })
         .catch((err) => console.error("Network error:", err))
         .finally(() => {
@@ -146,14 +160,9 @@ const Filters= () => {
             alert("Video je pripravené.");
         });
         alert("Renderovanie začalo.");
-      };   
-
-      const showAdaptiveVideo = () => {
-        const backendUrlAdaptShow = `http://${window.location.hostname}:5000/video/adaptive_treshold`;
-        
-          setAdaptiveTresholdVideo(backendUrlAdaptShow );
-         
       };
+
+
 
       const showGaussVideo = () => {
         const backendUrlGaussShow = `http://${window.location.hostname}:5000/video/gauss`;
@@ -162,7 +171,12 @@ const Filters= () => {
          
       };
 
-      
+      const showMedianVideo = () => {
+        const backendUrlMedianShow = `http://${window.location.hostname}:5000/video/median`;
+        
+          setMedianVideo(backendUrlMedianShow);
+         
+      };     
 
     return (
         <Box
@@ -215,8 +229,12 @@ const Filters= () => {
                     <MenuItem onClick={() => handleNavigate("/neurons")}>Neuróny</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/functions")}>Aktivačné funkcie</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/networks")}>Neurónové siete</MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/edge-detection")}>Detekcia hrán</MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/edge-detection-2")}>Detekcia hrán 2</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/architecture")}>Architektúra</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/convolution")}>Konvolúcia</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/filters")}>Filtre</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovvanie</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/edges")}>Detekcia hrán</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/final")}>Klasifikácia</MenuItem>
                 </Menu>
             </Box>
 
@@ -231,29 +249,43 @@ const Filters= () => {
                         fontWeight: "bold"
                       }}
                     >
-                    Filtre
+                    Filtre v spracovaní obrazu
                 </Typography>
-                    <Typography variant="body1" paragraph>
-                    V tejto sekcii preskúmame techniku prahovania, ktorá slúži na zjednodušenie obrazov premenou na binárnu formu – čiernu a bielu. Objavte, ako rôzne metódy prahovania môžu odhaliť skryté štruktúry a zvýrazniť dôležité informácie vo vašich obrázkoch.
-                    </Typography>
+
+                <Typography variant="body1" paragraph>
+                Filtre v spracovaní digitálnych obrazov sú algoritmy, ktoré sa aplikujú na obraz s cieľom dosiahnuť špecifický efekt. Digitálne obrazové filtre sú mocné nástroje, ktoré umožňujú modifikovať a analyzovať digitálne obrazy rôznymi spôsobmi. Fungujú na princípe aplikovania matematických operácií na pixely obrazu na základe hodnôt ich susedných pixelov. Výsledkom je transformovaný obraz, ktorý môže byť vizuálne zmenený alebo pripravený pre ďalšiu analýzu.
+                </Typography>
+
+                
+                <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>   
+                Prečo sú filtre dôležité?
+                </Typography>
+
+                <Typography variant="body1" paragraph align="left">
+                    <strong>Redukcia šumu:</strong> Odstránenie nežiaducich artefaktov a zlepšenie vizuálnej čistoty obrazu. <br />
+                    <strong>Extrakcia vlastností:  </strong> Identifikácia špecifických charakteristík obrazu, ako sú hrany alebo rohy.<br />
+                    <strong>Príprava pre analýzu: </strong> Čistenie a štandardizácia obrazových dát pre algoritmy strojového učenia a počítačového videnia.<br />
+                </Typography>
+
                 </Card>
 
                 <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                     <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>   
-                    Gaussov filter
+                    Gaussov filter: Jemné vyhladenie pre čistejší obraz
                     </Typography>
 
                     <Typography variant="body1" paragraph>
-                    Pri jednoduchom prahovaní zvolíte jednu globálnu prahovú hodnotu. Všetky pixely s intenzitou vyššou ako táto hodnota sa zmenia na bielu (popredie) a všetky pixely s intenzitou nižšou alebo rovnou sa zmenia na čiernu (pozadie).
+                    Gaussov filter je široko používaný na redukciu šumu v obrazoch pri zachovaní dôležitých detailov. Funguje tak, že každý pixel nahradí váženým priemerom jeho okolia, pričom váhy sú určené Gaussovou funkciou. To znamená, že bližšie pixely majú väčší vplyv na výslednú hodnotu, čo vedie k jemnému a prirodzenému vyhladeniu.
                     </Typography>
 
                     <Typography variant="body1" paragraph align="left">
-                        <strong>Prahová hodnota: </strong> Pixely s intenzitou vyššou ako táto hodnota sa zmenia na bielu a pixely s intenzitou nižšou alebo rovnou sa zmenia na čiernu  <br />
-                        <strong>Aplikácia prahu: </strong> Každý pixel v obraze sa porovná s touto prahovou hodnotou. <br />
-                        <strong>Výsledný binárny obraz:</strong>  Zobrazí sa výsledný čierno-biely obraz.<br />
+                        <strong>Použitie: </strong> <br />
+                        Efektívne znižuje šum, ktorý má náhodné rozloženie. <br />
+                        Zachováva hrany lepšie ako jednoduchý priemerovací filter.<br />
+                        Používa sa ako prípravný krok pre mnohé ďalšie algoritmy spracovania obrazu, napríklad detekciu hrán.
                     </Typography>
                     <video width="100%" autoPlay loop muted>
-                        <source src={`http://${window.location.hostname}:5000/video/simple_treshold_exaple`} type="video/mp4" />
+                        <source src={`http://${window.location.hostname}:5000/video/gauss_example`} type="video/mp4" />
                         Váš prehliadač nepodporuje prehrávanie videa.
                     </video>
                 </Card>
@@ -264,22 +296,22 @@ const Filters= () => {
                     </Typography>
 
                     <Typography variant="body1" paragraph align="left">
-                        <strong>Nahrajte svoj obrázok: </strong> Vyberte obrázok, na ktorom chcete aplikovať jednduché prahovanie <br />
-                        <strong>Nastavte prahovú hodnotu: </strong>Pomocou posuvníka vyberte prahovú hodnotu intenzity. Všetky pixely s intenzitou vyššou ako táto hodnota sa zmenia na bielu (popredie) a všetky pixely s intenzitou nižšou alebo rovnou sa zmenia na čiernu (pozadie). <br />
-                        <strong>Spustite rendering:  </strong> Aplikácia spracuje váš obrázok pomocou jednoduchého prahovania s vašimi nastaveniami.<br />
-                        <strong>Sledujte video: </strong>  Aplikácia zobrazí výsledný čierno-biely obraz na základe vami zvolenej prahovej hodnoty.<br />
+                        <strong>Nahrajte svoj obrázok: </strong> Začnite nahraním obrázka, na ktorom chcete experimentovať s Gaussovým filtrom. <br />
+                        <strong>Nastavte veľosť jadra: </strong>Interaktívne upravte veľkosť konvolučného jadra (šírku a výšku Gaussovho "okna"). Väčšie hodnoty vedú k silnejšiemu vyhladeniu. <br />
+                        <strong>Nastavte sigma:  </strong> Zmeňte hodnotu sigma (štandardná odchýlka Gaussovej funkcie), ktorá ovplyvňuje rozsah a intenzitu vyhladenia. Vyššie hodnoty sigma spôsobujú rozsiahlejšie a jemnejšie vyhladenie.<br />
+                        <strong>Spustite rendering:  </strong> Aplikácia spracuje váš obrázok pomocou gaussovho filtra s vašimi nastaveniami.<br />
+                        <strong>Sledujte video: </strong>  Pozorujte, ako sa váš obrázok mení pri úprave parametrov, a nájdite ideálne nastavenie pre redukciu šumu pri zachovaní dôležitých detailov.<br />
                     </Typography>
 
                     <Box component="form" onSubmit={handleFileUpload} sx={{ mb: 3 }}>
                     <Typography variant="subtitle1">Vyberte obrázok:</Typography>
-                    <input
-                        type="file"
-                        onChange={(e) => setFile(e.target.files[0])}
-                        accept="image/*"
-                        required
-                        style={{ marginBottom: "10px" }}
+                    <UploadSection
+                    handleFileChange={handleFileChange}
+                    openPicker={openPicker}
+                    setOpenPicker={setOpenPicker}
+                    handleDefaultImageSelect={handleDefaultImageSelect}
                     />
-                    <Button type="submit" variant="contained" color="primary" fullWidth>Upload Image</Button>
+                    <Button variant="contained" color="secondary" onClick={handleFileUpload} fullWidth sx={{ mt: 2 }} >Nahrať obrázok </Button>
                     </Box>
 
                     <Grid container spacing={2}>
@@ -356,7 +388,7 @@ const Filters= () => {
                     {/* Full-width Upload Gauss Button */}
                     <Grid item xs={12}>
                         <Button onClick={handleGaussSubmit} variant="contained" color="primary" fullWidth>
-                        Upload Threshold
+                        Upload parameters
                         </Button>
                     </Grid>
                     </Grid>
@@ -397,20 +429,21 @@ const Filters= () => {
 
             <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
             <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
-                Adaptívne prahovanie: Lokálny detail
+                Mediánový filter: Eliminujte šum s presnosťou
             </Typography>
 
             <Typography variant="body1" paragraph>
-            Adaptívne prahovanie, na rozdiel od jednoduchého, vypočítava lokálnu prahovú hodnotu pre každý pixel na základe intenzity okolitých pixelov. To znamená, že prahová hodnota sa mení v závislosti od lokálnych vlastností obrazu.
+                Mediánový filter je špeciálne navrhnutý na odstránenie impulzného šumu (tzv. "soľ a korenie" šum), ktorý sa prejavuje ako náhodné čierne a biele pixely v obraze. Funguje tak, že pre každý pixel nahradí jeho hodnotu mediánovou hodnotou pixelov v jeho definovanom okolí. Vďaka tomu dokáže efektívne eliminovať extrémne hodnoty šumu bez výrazného rozmazania hrán.
             </Typography>
 
-            <Typography variant="body1" paragraph align="left"> 
-                Vhodné pre obrazy s nekonzistentným osvetlením alebo zložitým pozadím. <br />
-                Dokáže efektívnejšie segmentovať objekty aj v náročnejších svetelných podmienkach. <br />
-                Zvýrazňuje lokálne detaily, ktoré by pri globálnom prahovaní mohli zaniknúť.
+            <Typography variant="body1" paragraph align="left">
+                <strong>Použitie: </strong> <br />
+                Ideálny na odstránenie náhlych, izolovaných šumových bodov. <br />
+                Lepšie zachováva ostré hrany v porovnaní s priemerovacími filtrami pri odstraňovaní impulzného šumu.<br />
+                Používa sa v rôznych aplikáciách, kde sa vyskytuje tento typ šumu, napríklad pri spracovaní naskenovaných dokumentov alebo starých fotografií.
             </Typography>
             <video width="100%" autoPlay loop muted>
-                <source src={`http://${window.location.hostname}:5000/video/adaptive_treshold_example`} type="video/mp4" />
+                <source src={`http://${window.location.hostname}:5000/video/median_example`} type="video/mp4" />
                 Váš prehliadač nepodporuje prehrávanie videa.
             </video>
             
@@ -418,41 +451,36 @@ const Filters= () => {
             </Card>
             <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
             <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}> 
-            Interaktívne prahovanie: Adaptívne prahovanie
+            Interaktívne filtre: Mediánový filter
             </Typography>
 
             <Typography variant="body1" paragraph align="left">
-                <strong>Nahrajte svoj obrázok: </strong> Vyberte obrázok, na ktorom chcete aplikovať jednduché prahovanie <br />
-                <strong>Nastavte parametre: </strong> <br />
-                <ul>
-                    <li><strong>Veľkosť okolia:</strong> Určite veľkosť lokálneho okolia (okna pixelov), na základe ktorého sa bude pre každý pixel vypočítavať prahová hodnota. Menšie okolie zachytí viac lokálnych detailov, zatiaľ čo väčšie okolie bude menej citlivé na drobné zmeny.</li>
-                    <li><strong>Konštanta:</strong> Zadajte konštantu, ktorá sa odčíta od vypočítanej lokálnej prahovej hodnoty. Kladné hodnoty konštanty spôsobia, že sa ako popredie (biela) označí menej pixelov, čím sa zvýši citlivosť na svetlejšie oblasti. Záporné hodnoty naopak označia viac pixelov ako popredie. </li>
-                </ul>
-                <strong>Spustite rendering:  </strong>  Aplikácia vypočíta lokálnu prahovú hodnotu pre každý pixel na základe jeho okolia a následne od nej odčíta vašu konštantu.<br />
-                <strong>Sledujte video: </strong> Zobrazí sa výsledný čierno-biely obraz v ktorom sú zobrazené detaily <br />
+                <strong>Nahrajte svoj obrázok: </strong> Začnite nahraním obrázka, na ktorom chcete experimentovať s Gaussovým filtrom. <br />
+                <strong>Nastavte veľkosť jadra (K-size): </strong>Interaktívne upravte veľkosť štvorcového okolia, v ktorom sa bude vypočítavať medián. Väčšie okná sú účinnejšie pri odstraňovaní rozsiahlejšieho šumu, ale môžu viesť k väčšiemu rozmazaniu detailov. <br />
+                <strong>Spustite rendering:  </strong> Aplikácia spracuje váš obrázok pomocou mediánového filtra s vašimi nastaveniami.<br />
+                <strong>Sledujte video: </strong> Sledujte, ako sa impulzný šum (čierne a biele bodky) z vášho obrázka odstraňuje pri zmene veľkosti jadra, a nájdite optimálnu rovnováhu medzi odstránením šumu a zachovaním ostrých hrán.<br />
             </Typography>
 
             <Typography variant="h5" gutterBottom paragraph sx={{ mt: 2 }}>
                 <Grid item xs={12}> 
                 <Box component="form" onSubmit={handleFileUpload} sx={{ mb: 3 }}>
                     <Typography variant="subtitle1">Vyberte obrázok:</Typography>
-                    <input
-                        type="file"
-                        onChange={(e) => setFile(e.target.files[0])}
-                        accept="image/*"
-                        required
-                        style={{ marginBottom: "10px" }}
+                    <UploadSection
+                    handleFileChange={handleFileChange}
+                    openPicker={openPicker}
+                    setOpenPicker={setOpenPicker}
+                    handleDefaultImageSelect={handleDefaultImageSelect}
                     />
-                    <Button type="submit" variant="contained" color="primary" fullWidth>Upload Image</Button>
+                    <Button variant="contained" color="secondary" onClick={handleFileUpload} fullWidth sx={{ mt: 2 }} >Nahrať obrázok </Button>
                     </Box>
                     <TextField
                         fullWidth
-                        label="Veľkosť okolia"
+                        label="K-size"
                         type="number"
-                        value={adaptive_treshold}
+                        value={ksize}
                         onChange={(e) => {
                             const value = parseInt(e.target.value);
-                            setAdaptiveThreshold(value);
+                            setKsize(value);
                             setError(value % 2 === 0);
                             }}
                             error={error}
@@ -467,7 +495,7 @@ const Filters= () => {
                                 borderRadius: "4px",
                             },
                             }}
-                        placeholder="Zadajte veľkosť okolia (nepárne číslo)"    
+                        placeholder="Zadajte veľkosť K-size (nepárne číslo)"    
 
                         sx={{
                             mt: 5,
@@ -488,62 +516,25 @@ const Filters= () => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={12}> 
-                    <TextField
-                        fullWidth
-                        label="Veľkosť konštanty"
-                        type="number"
-                        value={constant}
-                        onChange={(e) => {
-                            const value = parseInt(e.target.value);
-                                setConstant(value);
-                                setErrorNeurons(value < 2 || value > 8); // nastaví error stav   
-                            }}
-                        inputProps={{
-                            min: 1,
-                            max: 10,
-                            style: {
-                                color: "white",
-                                backgroundColor: "#222", // Tmavé pozadie iba pre samotný input
-                                borderRadius: "4px",
-                            },
-                            }}
-                        placeholder="Zadajte hodnotu konštanty"  
-                        sx={{
-                            input: { color: "white" },
-                            bgcolor: "#111",
-                            borderRadius: 1,
-                            "& .MuiOutlinedInput-root": {
-                                "& fieldset": { borderColor: "#555" },
-                            }
-                        }}
-                        InputLabelProps={{
-                            sx: { 
-                                color: "white",
-                                fontSize: "1.2rem",
-                                transform: "translate(14px, -25px) scale(1)",
-                            }
-                        }}
-                    />
-                </Grid>
+                
             </Typography>
 
             <Button 
-                onClick={handleAdaptiveSumbmit} 
+                onClick={handleKsizeSubmit} 
                 variant="contained" 
                 color="primary" 
                 fullWidth 
                 sx={{ mt: 3 }} 
-                disabled={error || errorNeurons}
+                disabled={error}
             >
                 Upload parameters
             </Button>
 
-            <Button variant="contained" color="secondary" onClick={handleAdaptiveRendering} fullWidth sx={{ mt: 2 }}>
+            <Button variant="contained" color="secondary" onClick={handleMedianRendering} fullWidth sx={{ mt: 2 }}>
                 Spustiť rendering
             </Button>
 
-            <Button onClick={showAdaptiveVideo} variant="contained" color="secondary" fullWidth sx={{ mt: 2 }}>
+            <Button onClick={showMedianVideo} variant="contained" color="secondary" fullWidth sx={{ mt: 2 }}>
                 Show video
             </Button>
 
@@ -559,16 +550,16 @@ const Filters= () => {
                 </Box>
             )}
 
-            {adaptive_tresholdVideo && (
+            {medianVideo && (
                 <Box sx={{ mt: 3 }}>
                     <video width="100%" controls>
-                        <source src={adaptive_tresholdVideo} type="video/mp4" />
+                        <source src={medianVideo} type="video/mp4" />
                     </video>
                 </Box>
             )}
         </Card>
                         {/* Tlačidlo pre návrat na hlavnú stránku */}
-                        <Button
+                <Button
                     onClick={() => navigate("/")}
                     variant="contained"
                     color="primary"

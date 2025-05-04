@@ -1,8 +1,11 @@
-import { Typography, Grid, Container, Card, Button, Box, Menu, MenuItem, IconButton, TextField } from "@mui/material";
+import { Typography, Grid, Container, Card, Button, Box, Menu, MenuItem, IconButton, TextField,Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
 import { RotatingLines } from 'react-loader-spinner'; // Import the loading spinner
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import HomeIcon from "@mui/icons-material/Home";
 
 const Networks = () => {
     const navigate = useNavigate();
@@ -197,7 +200,7 @@ const Networks = () => {
                     <MenuItem onClick={() => handleNavigate("/architecture")}>Architektúra</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/convolution")}>Konvolúcia</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/filters")}>Filtre</MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovvanie</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovanie</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/edges")}>Detekcia hrán</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/final")}>Klasifikácia</MenuItem>
                 </Menu>
@@ -226,6 +229,7 @@ const Networks = () => {
                             <source src={`http://${window.location.hostname}:5000/video/brain`} type="video/mp4" />
                                 Váš prehliadač nepodporuje prehrávanie videa.
                         </video>
+                        <Typography variant="body2" paragraph>Zdroj: https://www.youtube.com/watch?v=shjqtR8VJ2I&t=15s</Typography>
                         <Typography variant="body1" paragraph>
                         Rovnako ako ľudský mozog, aj neurónové siete sú tvorené sieťou prepojených jednotiek.<br />
                         Ľudský mozog sa učí posilňovaním alebo oslabovaním synaptických spojení.<br />
@@ -365,14 +369,15 @@ const Networks = () => {
                     >
                         Upload network parameters
                     </Button>
-                    
-                    <Button onClick={showNetworkVideo} variant="contained" color="secondary" fullWidth sx={{ mt: 2 }}>
-                        Show network video
-                    </Button>
 
                     <Button variant="contained" color="secondary" onClick={handleNetworkRendering} fullWidth sx={{ mt: 2 }}>
                         Spustiť network rendering
                     </Button>
+                  
+                    <Button onClick={showNetworkVideo} variant="contained" color="secondary" fullWidth sx={{ mt: 2 }}>
+                        Show network video
+                    </Button>
+
 
                     {isLoading && ( // Show loading spinner while rendering
                         <Box sx={{ mt: 3 }}>
@@ -556,14 +561,14 @@ const Networks = () => {
                     <Button onClick={handleMetricsSubmit} variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
                         Upload network parameters
                     </Button>
-                    
+                    <Button variant="contained" color="secondary" onClick={handleMetricsRendering} fullWidth sx={{ mt: 2 }}>
+                        Spustiť network rendering
+                    </Button>                   
                     <Button onClick={showAccVideo} variant="contained" color="secondary" fullWidth sx={{ mt: 2 }}>
                         Show network video
                     </Button>
 
-                    <Button variant="contained" color="secondary" onClick={handleMetricsRendering} fullWidth sx={{ mt: 2 }}>
-                        Spustiť network rendering
-                    </Button>
+
                     {isLoading && ( // Show loading spinner while rendering
                         <Box sx={{ mt: 3 }}>
                             <RotatingLines
@@ -592,9 +597,37 @@ const Networks = () => {
                         </Box>
                     )}
                 </Card>
-                <Button onClick={() => navigate("/")} variant="contained" color="primary" sx={{ mt: 2 }}>
-                    Späť na hlavnú stránku
-                </Button>
+                {/* Tlačidlo pre návrat na hlavnú stránku */}
+                <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: "center" }}>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        startIcon={<ArrowBackIcon />}
+                        // Tu si doplníš referenciu
+                        onClick={() => navigate("/functions")}
+                    >
+                        Späť
+                    </Button>
+
+                    <Button
+                        onClick={() => navigate("/")}
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<HomeIcon />}
+                    >
+                        Hlavná stránka
+                    </Button>
+
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        endIcon={<ArrowForwardIcon />}
+                        // Tu si doplníš referenciu
+                        onClick={() => navigate("/architecture")}
+                    >
+                        Ďalej
+                    </Button>
+                </Stack>
             </Container>
         </Box>
         

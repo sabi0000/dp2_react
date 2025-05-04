@@ -1,7 +1,10 @@
-import { Typography, Container, Card, Button, Box, Menu, MenuItem, IconButton } from "@mui/material";
+import { Typography, Container, Card, Button, Box, Menu, MenuItem, IconButton,Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import HomeIcon from "@mui/icons-material/Home";
 
 const Neurons = () => {
     const navigate = useNavigate();
@@ -75,7 +78,7 @@ const Neurons = () => {
                     <MenuItem onClick={() => handleNavigate("/architecture")}>Architektúra</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/convolution")}>Konvolúcia</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/filters")}>Filtre</MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovvanie</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovanie</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/edges")}>Detekcia hrán</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/final")}>Klasifikácia</MenuItem>
                 </Menu>
@@ -152,14 +155,36 @@ const Neurons = () => {
                 </Card>
 
                 {/* Tlačidlo pre návrat na hlavnú stránku */}
-                <Button
-                    onClick={() => navigate("/")}
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 2 }}
-                >
-                    Späť na hlavnú stránku
-                </Button>
+                <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: "center" }}>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        startIcon={<ArrowBackIcon />}
+                        // Tu si doplníš referenciu
+                        onClick={() => navigate("/")}
+                    >
+                        Späť
+                    </Button>
+
+                    <Button
+                        onClick={() => navigate("/")}
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<HomeIcon />}
+                    >
+                        Hlavná stránka
+                    </Button>
+
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        endIcon={<ArrowForwardIcon />}
+                        // Tu si doplníš referenciu
+                        onClick={() => navigate("/functions")}
+                    >
+                        Ďalej
+                    </Button>
+                </Stack>
             </Container>
         </Box>
     );

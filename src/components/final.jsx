@@ -1,9 +1,12 @@
-import { Typography, Container, Card, Button, Box, Menu, MenuItem, IconButton, Tabs, Tab } from "@mui/material";
+import { Typography, Container, Card, Button, Box, Menu, MenuItem, IconButton, Tabs, Tab, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
 import axios from 'axios';
 import UploadSection from './UploadSection';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import HomeIcon from "@mui/icons-material/Home";
 
 const Final = () => {
     const navigate = useNavigate();
@@ -118,7 +121,7 @@ const Final = () => {
                     <MenuItem onClick={() => handleNavigate("/architecture")}>Architektúra</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/convolution")}>Konvolúcia</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/filters")}>Filtre</MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovvanie</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovanie</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/edges")}>Detekcia hrán</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/final")}>Klasifikácia</MenuItem>
                 </Menu>
@@ -228,8 +231,8 @@ const Final = () => {
 
                 {/* Obsah tabov */}
                 {value === 0 && <TabPanel> <strong>Aktinická keratóza </strong><br></br> Drsná, šupinatá škvrna na koži, ktorá vzniká v dôsledku dlhodobého vystavenia slnku. Považuje sa za predrakovinový stav a môže sa vyvinúť do spinocelulárneho karcinómu.</TabPanel>}
-                {value === 1 && <TabPanel> <strong>Bazocelulárny karcinóm </strong><br></br> Najčastejší typ rakoviny kože, ktorý začína v bazálnych bunkách. Zvyčajne rastie pomaly a zriedka sa šíri do iných častí tela. Často sa objavuje ako mierne priesvitná hrčka alebo vriedok, ktorý sa nehojí..</TabPanel>}
-                {value === 2 && <TabPanel> <strong>Benígna keratóza </strong><br></br> Nerakovinové kožné výrastky, ktoré môžu vyzerať ako materské znamienka, bradavice alebo iné kožné lézie. Sú neškodné a nepovažujú sa za rakovinu kože</TabPanel>}
+                {value === 1 && <TabPanel> <strong>Bazocelulárny karcinóm </strong><br></br> Najčastejší typ rakoviny kože, ktorý začína v bazálnych bunkách. Zvyčajne rastie pomaly a zriedka sa šíri do iných častí tela. Často sa objavuje ako mierne perleťová hrčka alebo vriedok, ktorý sa nehojí.</TabPanel>}
+                {value === 2 && <TabPanel> <strong>Benígna keratóza </strong><br></br> Nerakovinové útvary, ktoré môžu vyzerať ako materské znamienka, bradavice alebo iné kožné lézie. Sú neškodné a nepovažujú sa za rakovinu kože</TabPanel>}
                 {value === 3 && <TabPanel> <strong>Dermatofibróm </strong><br></br> Bežný, neškodný fibrózny kožný uzlík, ktorý sa zvyčajne nachádza na nohách, ale môže sa objaviť kdekoľvek na tele.</TabPanel>}
                 {value === 4 && <TabPanel> <strong>Melanóm</strong><br></br>  Najnebezpečnejší typ rakoviny kože, ktorý vzniká z melanocytov (buniek produkujúcich pigment). Môže sa vyvinúť z existujúceho materského znamienka alebo sa objaviť ako nová pigmentovaná alebo nezvyčajne vyzerajúca lézia. Včasné odhalenie je kľúčové pre úspešnú liečbu.</TabPanel>}
                 {value === 5 && <TabPanel> <strong>Melanocytové névy</strong><br></br>  Bežný, zvyčajne neškodný kožný výrastok tvorený melanocytmi. Väčšina materských znamienok je benígna, ale niektoré typy môžu mať vyššie riziko premeny na melanóm. Zmeny vo veľkosti, tvare, farbe alebo iných vlastnostiach materského znamienka by mal skontrolovať lekár</TabPanel>}
@@ -260,14 +263,36 @@ const Final = () => {
                 
 
                 {/* Tlačidlo pre návrat na hlavnú stránku */}
-                <Button
-                    onClick={() => navigate("/")}
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 2 }}
-                >
-                    Späť na hlavnú stránku
-                </Button>
+                <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: "center" }}>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        startIcon={<ArrowBackIcon />}
+                        // Tu si doplníš referenciu
+                        onClick={() => navigate("/edges")}
+                    >
+                        Späť
+                    </Button>
+
+                    <Button
+                        onClick={() => navigate("/")}
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<HomeIcon />}
+                    >
+                        Hlavná stránka
+                    </Button>
+
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        endIcon={<ArrowForwardIcon />}
+                        // Tu si doplníš referenciu
+                        onClick={() => navigate("/")}
+                    >
+                        Ďalej
+                    </Button>
+                </Stack>
 
             </Container>
         </Box>

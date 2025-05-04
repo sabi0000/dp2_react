@@ -64,7 +64,7 @@ const Home = () => {
                     <MenuItem onClick={() => handleNavigate("/architecture")}>Architektúra</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/convolution")}>Konvolúcia</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/filters")}>Filtre</MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovvanie</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovanie</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/edges")}>Detekcia hrán</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/final")}>Klasifikácia</MenuItem>
                 </Menu>
@@ -79,7 +79,7 @@ const Home = () => {
                     <Typography variant="body1" paragraph>
                         Táto aplikácia umožňuje analyzovať a vizualizovať jednotlivé aspekty výpočtovej inteligencie a strojového videnia.
                     </Typography>
-                    <Button variant="contained" color="primary" onClick={() => handleNavigate("/edge-detection")}>
+                    <Button variant="contained" color="primary" onClick={() => handleNavigate("/neurons")}>
                         Začať
                     </Button>
                 </Card>

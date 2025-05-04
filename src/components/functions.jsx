@@ -1,8 +1,11 @@
 
-import { Typography, Container, Card, Button, Box,  Menu, MenuItem, IconButton, TextField} from "@mui/material";
+import { Typography, Container, Card, Button, Box,  Menu, MenuItem, IconButton, TextField, Stack} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import HomeIcon from "@mui/icons-material/Home";
 
 
 const Functions = () => {
@@ -131,7 +134,7 @@ const Functions = () => {
                     <MenuItem onClick={() => handleNavigate("/architecture")}>Architektúra</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/convolution")}>Konvolúcia</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/filters")}>Filtre</MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovvanie</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/treshold")}>Prahovanie</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/edges")}>Detekcia hrán</MenuItem>
                     <MenuItem onClick={() => handleNavigate("/final")}>Klasifikácia</MenuItem>
                 </Menu>
@@ -335,6 +338,10 @@ const Functions = () => {
                         Softmax Kalkulačka
                     </Typography>
 
+                    <Typography variant="body1" paragraph sx={{ mt: 2 }}>
+                    Keďže sa aktivačná funkcia softmax používa pri viactriednej klasifikácií, tak softmax kalkluačka očakáva ako vstup minimáne dve hodnoty oddelené čiarkou <br />
+                    </Typography>
+
                     <TextField
                         label="Vstupné hodnoty"
                         variant="outlined"
@@ -372,9 +379,37 @@ const Functions = () => {
 
                 
                 
-                <Button onClick={() => navigate("/")} variant="contained" color="primary" sx={{ mt: 2 }}>
-                    Späť na hlavnú stránku
-                </Button>
+                {/* Tlačidlo pre návrat na hlavnú stránku */}
+                <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: "center" }}>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        startIcon={<ArrowBackIcon />}
+                        // Tu si doplníš referenciu
+                        onClick={() => navigate("/neurons")}
+                    >
+                        Späť
+                    </Button>
+
+                    <Button
+                        onClick={() => navigate("/")}
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<HomeIcon />}
+                    >
+                        Hlavná stránka
+                    </Button>
+
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        endIcon={<ArrowForwardIcon />}
+                        // Tu si doplníš referenciu
+                        onClick={() => navigate("/networks")}
+                    >
+                        Ďalej
+                    </Button>
+                </Stack>
             </Container>
         </Box>
         

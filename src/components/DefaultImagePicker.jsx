@@ -2,8 +2,13 @@ import { Dialog, DialogTitle, Grid,} from '@mui/material';
 
 function DefaultImagePicker({ open, handleClose, handleSelect }) {
   const images = [
-    '/default-images/sample1.jpg',
-    '/default-images/sample2.png',
+    '/default-images/ISIC_0031197.jpg',
+    '/default-images/ISIC_0024698.jpg',
+    '/default-images/ISIC_0025964.jpg',
+    '/default-images/ISIC_0027008.jpg',
+    '/default-images/ISIC_0028155.jpg',
+    '/default-images/ISIC_0029417.jpg',
+    '/default-images/ISIC_0027419.jpg',
   ];
 
   return (

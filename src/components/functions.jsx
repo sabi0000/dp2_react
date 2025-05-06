@@ -182,6 +182,9 @@ const Functions = () => {
                     </Typography>
 
                 <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>Sigmoid Kalkulačka</Typography>
+                <Typography variant="body1" paragraph sx={{ mt: 2 }}>
+                    Na zadávanie desatinných čísel použite bodku (.) namiesto čiarky (,). <br />
+                </Typography>
                 <TextField
                     label="Vstupná hodnota"
                     variant="outlined"
@@ -193,6 +196,7 @@ const Functions = () => {
                         input: { color: "white" }, // Farba textu v poli
                         bgcolor: "#222", // Tmavé pozadie
                         borderRadius: 1, // Zaoblené rohy
+                        mt: 2,
                         "& .MuiOutlinedInput-root": {
                             "& fieldset": { borderColor: "#555" }, // Fixná farba ohraničenia
                             // Removed hover and focus styles
@@ -233,6 +237,9 @@ const Functions = () => {
                     </Typography>
 
                 <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>ReLU Kalkulačka</Typography>
+                <Typography variant="body1" paragraph sx={{ mt: 2 }}>
+                    Na zadávanie desatinných čísel použite bodku (.) namiesto čiarky (,). <br />
+                </Typography>
                 <TextField
                     label="Vstupná hodnota"
                     variant="outlined"
@@ -244,6 +251,7 @@ const Functions = () => {
                         input: { color: "white" }, // Farba textu v poli
                         bgcolor: "#222", // Tmavé pozadie
                         borderRadius: 1, // Zaoblené rohy
+                        mt: 2,
                         "& .MuiOutlinedInput-root": {
                             "& fieldset": { borderColor: "#555" }, // Fixná farba ohraničenia
                             // Removed hover and focus styles
@@ -284,6 +292,9 @@ const Functions = () => {
                     </Typography>
 
                 <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>Tanh Kalkulačka</Typography>
+                <Typography variant="body1" paragraph sx={{ mt: 2 }}>
+                    Na zadávanie desatinných čísel použite bodku (.) namiesto čiarky (,). <br />
+                </Typography>
                 <TextField
                     label="Vstupná hodnota"
                     variant="outlined"
@@ -295,6 +306,7 @@ const Functions = () => {
                         input: { color: "white" }, // Farba textu v poli
                         bgcolor: "#222", // Tmavé pozadie
                         borderRadius: 1, // Zaoblené rohy
+                        mt: 2,
                         "& .MuiOutlinedInput-root": {
                             "& fieldset": { borderColor: "#555" }, // Fixná farba ohraničenia
                             // Removed hover and focus styles
@@ -353,6 +365,7 @@ const Functions = () => {
                             input: { color: "white" },
                             bgcolor: "#222",
                             borderRadius: 1,
+                            mt: 2,
                             "& .MuiOutlinedInput-root": {
                                 "& fieldset": { borderColor: "#555" }
                             }

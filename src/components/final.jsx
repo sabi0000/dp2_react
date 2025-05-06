@@ -243,7 +243,7 @@ const Final = () => {
 
                 <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                     <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>   
-                    Dôležité upozornenie:
+                    Dôležité upozornenie
                     </Typography>
                     <Typography variant="body1" paragraph>
                     Používajte túto aplikáciu ako interaktívny nástroj na pochopenie princípov umelej inteligencie v oblasti rozpoznávania medicínskych snímok. 

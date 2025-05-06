@@ -105,7 +105,7 @@ const Architecture= () => {
 
                 <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                     <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>   
-                    Konvolučné neurónové siete (CNN):
+                    Konvolučné neurónové siete (CNN)
                     </Typography>
                     <Typography variant="body1" paragraph>
                         CNN sú špeciálne navrhnuté pre spracovanie obrazových dát.<br/>
@@ -151,7 +151,7 @@ const Architecture= () => {
 
                 <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                     <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
-                        DenseNet 121
+                        DenseNet121
                     </Typography>
                     <Typography variant="body1" paragraph>
                         DenseNet121 je hlboká konvolučná neurónová sieť s 121 vrstvami usporiadanými do 4 dense blokov.<br/>
@@ -201,7 +201,7 @@ const Architecture= () => {
 
                 <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                     <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
-                        ResNet 50
+                        ResNet50
                     </Typography>
                     <Typography variant="body1" paragraph>
                         ResNet50 je hlboká konvolučná neurónová sieť s 50 vrstvami.<br/>

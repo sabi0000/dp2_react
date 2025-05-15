@@ -9,6 +9,8 @@ function DefaultImagePicker({ open, handleClose, handleSelect }) {
     '/default-images/ISIC_0028155.jpg',
     '/default-images/ISIC_0029417.jpg',
     '/default-images/ISIC_0027419.jpg',
+    '/default-images/ISIC_0033964.jpg',
+    '/default-images/ISIC_0034271.jpg',
   ];
 
   return (

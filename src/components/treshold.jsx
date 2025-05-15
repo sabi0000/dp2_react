@@ -7,6 +7,7 @@ import UploadSection from './UploadSection';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import HomeIcon from "@mui/icons-material/Home";
+import { useEffect, useRef } from "react";
 
 const Treshold= () => {
     const navigate = useNavigate();
@@ -27,10 +28,17 @@ const Treshold= () => {
     const [errorNeurons, setErrorNeurons] = useState(false);
 
     const [openPicker, setOpenPicker] = useState(false);
+    const videoRef = useRef(null);
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.5; // Spomalí video na 50 %
+        }
+    }, []);
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
-        console.log("Selected file:", selectedFile); // Pridajte tento riadok na kontrolu
+        console.log("Selected file:", selectedFile); // 
         setFile(selectedFile);
     };
     const handleDefaultImageSelect = async (imgPath) => {
@@ -202,16 +210,18 @@ const Treshold= () => {
                 muted
                 playsInline
                 style={{
-                    position: "absolute",
+                    position: "fixed",         
                     top: 0,
                     left: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    zIndex: -1
-                }}
+                    minWidth: "100%",          
+                    minHeight: "100%",         
+                    objectFit: "cover",        
+                    zIndex: -1,
+                    transform: "translateZ(0)", 
+                    backfaceVisibility: "hidden" 
+                  }}
             >
-                <source src="background.mp4" type="video/mp4" />
+                <source src="background3.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
 
@@ -242,7 +252,6 @@ const Treshold= () => {
             </Box>
 
             <Container maxWidth="md" sx={{ pt: 10 }}>
-                {/* Úvodná karta o neurónoch */}
                 <Card sx={{ mt: 4, p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                 <Typography
                     variant="h3"
@@ -311,12 +320,13 @@ const Treshold= () => {
                         type="number"
                         value={threshold}
                         onChange={(e) => setThreshold(parseInt(e.target.value))}
+                        
                         inputProps={{
                             min: 1,
                             max: 10,
                             style: {
                               color: "white",
-                              backgroundColor: "#222", // Tmavé pozadie iba pre samotný input
+                              backgroundColor: "#222", // 
                               borderRadius: "4px",
                             },
                           }}
@@ -449,7 +459,7 @@ const Treshold= () => {
                             max: 10,
                             style: {
                                 color: "white",
-                                backgroundColor: "#222", // Tmavé pozadie iba pre samotný input
+                                backgroundColor: "#222", // 
                                 borderRadius: "4px",
                             },
                             }}
@@ -490,7 +500,7 @@ const Treshold= () => {
                             max: 10,
                             style: {
                                 color: "white",
-                                backgroundColor: "#222", // Tmavé pozadie iba pre samotný input
+                                backgroundColor: "#222", // 
                                 borderRadius: "4px",
                             },
                             }}
@@ -556,18 +566,20 @@ const Treshold= () => {
                 {/* Tlačidlo pre návrat na hlavnú stránku */}
                 <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: "center" }}>
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         startIcon={<ArrowBackIcon />}
-                        // Tu si doplníš referenciu
-                        onClick={() => navigate("/filters")}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/filters");
+                        }} 
                     >
                         Späť
                     </Button>
 
                     <Button
                         onClick={() => navigate("/")}
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                         startIcon={<HomeIcon />}
                     >
@@ -575,11 +587,13 @@ const Treshold= () => {
                     </Button>
 
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         endIcon={<ArrowForwardIcon />}
-                        // Tu si doplníš referenciu
-                        onClick={() => navigate("/edges")}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/edges");
+                        }} 
                     >
                         Ďalej
                     </Button>

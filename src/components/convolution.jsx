@@ -2,11 +2,12 @@ import { Typography, Container, Card, Button, Box, Menu, MenuItem, IconButton, S
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
-import { RotatingLines } from 'react-loader-spinner'; // Import the loading spinner
+import { RotatingLines } from 'react-loader-spinner'; // 
 import UploadSection from './UploadSection';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import HomeIcon from "@mui/icons-material/Home";
+import { useEffect, useRef } from "react";
 
 
 const Convolution= () => {
@@ -18,10 +19,16 @@ const Convolution= () => {
     const [convVideo, setConvVideo] = useState("");
     
     const [openPicker, setOpenPicker] = useState(false);
+    const videoRef = useRef(null);
 
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.5; // 
+        }
+    }, []);
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
-        console.log("Selected file:", selectedFile); // Pridajte tento riadok na kontrolu
+        console.log("Selected file:", selectedFile); // 
         setFile(selectedFile);
     };
     const handleDefaultImageSelect = async (imgPath) => {
@@ -124,14 +131,16 @@ const Convolution= () => {
                 muted
                 playsInline
                 style={{
-                    position: "absolute",
+                    position: "fixed",         
                     top: 0,
                     left: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    zIndex: -1
-                }}
+                    minWidth: "100%",          
+                    minHeight: "100%",         
+                    objectFit: "cover",        
+                    zIndex: -1,
+                    transform: "translateZ(0)", 
+                    backfaceVisibility: "hidden" 
+                  }}
             >
                 <source src="background3.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -209,7 +218,7 @@ const Convolution= () => {
                     href="/calc" 
                     variant="contained" 
                     color="primary"
-                    sx={{ mt: 3 }}  // ← Toto ho posunie nižšie
+                    sx={{ mt: 3 }}  // 
                   >
                     Konvolučná kalkulačka
                   </Button>
@@ -294,18 +303,20 @@ const Convolution= () => {
                 {/* Tlačidlo pre návrat na hlavnú stránku */}
                 <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: "center" }}>
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         startIcon={<ArrowBackIcon />}
-                        // Tu si doplníš referenciu
-                        onClick={() => navigate("/architecture")}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/architecture");
+                        }} 
                     >
                         Späť
                     </Button>
 
                     <Button
                         onClick={() => navigate("/")}
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                         startIcon={<HomeIcon />}
                     >
@@ -313,11 +324,13 @@ const Convolution= () => {
                     </Button>
 
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         endIcon={<ArrowForwardIcon />}
-                        // Tu si doplníš referenciu
-                        onClick={() => navigate("/filters")}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/filters");
+                        }} 
                     >
                         Ďalej
                     </Button>

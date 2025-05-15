@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Select, MenuItem, TextField, Button, Typography, Grid, Box, Container, Card,Menu, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useEffect, useRef } from "react";
 
 const generateMatrix = (rows, cols, defaultValue = 0) => {
   return Array.from({ length: rows }, () =>
@@ -20,7 +21,13 @@ const ConvolutionCalculator = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  
+    const videoRef = useRef(null);
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.5; 
+        }
+    }, []); 
   const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
   };
@@ -88,8 +95,8 @@ const ConvolutionCalculator = () => {
                     style: {
                       width: "60px",
                       textAlign: "center",
-                      color: "white", // Nastaví farbu písma na bielu
-                      backgroundColor: "#333", // Nastaví tmavé pozadie v TextField
+                      color: "white", // 
+                      backgroundColor: "#333", // 
                     },
                   }}
                 />
@@ -122,19 +129,21 @@ const ConvolutionCalculator = () => {
                 muted
                 playsInline
                 style={{
-                    position: "absolute",
+                    position: "fixed",         
                     top: 0,
                     left: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    zIndex: -1
-                }}
+                    minWidth: "100%",          
+                    minHeight: "100%",         
+                    objectFit: "cover",        
+                    zIndex: -1,
+                    transform: "translateZ(0)", 
+                    backfaceVisibility: "hidden" 
+                  }}
             >
                 <source src="background3.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
-             {/* Ikona menu a nadpis vedľa nej */}
+             {/* Ikona menu */}
              <Box sx={{ position: "absolute", top: 10, left: 10, display: "flex", alignItems: "center" }}>
                 <IconButton onClick={handleClick} sx={{ color: "white" }}>
                     <MenuIcon />
@@ -193,10 +202,10 @@ const ConvolutionCalculator = () => {
     onChange={(e) => handleSizeChange("input", e.target.value)}
     sx={{
       minWidth: 100,
-      backgroundColor: "#333", // Nastaví tmavé pozadie
-      color: "white",           // Nastaví bielu farbu textu
+      backgroundColor: "#333", // 
+      color: "white",           // 
       '& .MuiSelect-icon': {
-        color: 'white',         // Nastaví farbu ikony na bielu
+        color: 'white',         // 
       }
     }}
   >
@@ -215,10 +224,10 @@ const ConvolutionCalculator = () => {
     onChange={(e) => handleSizeChange("kernel", e.target.value)}
     sx={{
       minWidth: 100,
-      backgroundColor: "#333", // Nastaví tmavé pozadie
-      color: "white",           // Nastaví bielu farbu textu
+      backgroundColor: "#333", // 
+      color: "white",           // 
       '& .MuiSelect-icon': {
-        color: 'white',         // Nastaví farbu ikony na bielu
+        color: 'white',         //
       }
     }}
   >
@@ -250,16 +259,15 @@ const ConvolutionCalculator = () => {
         <Grid item xs={12} key={i}>
           <Grid container spacing={1}>
             {row.map((val, j) => {
-              // Dynamicky nastavíme šírku v závislosti na počte stĺpcov (ak 2x2 matica, tak xs={6}, pre 3x3 xs={4}, atď.)
-              const columns = row.length; // Počet stĺpcov v aktuálnom riadku
-              const width = 12 / columns;  // Dynamická šírka pre každý stĺpec (napr. 12 / 2 = 6 pre 2x2 maticu)
+              const columns = row.length; // 
+              const width = 12 / columns;  // 
               return (
                 <Grid item key={`${i}-${j}`} xs={width}>
                   <TextField
                     value={val}
                     InputProps={{
                         readOnly: true,
-                        style: { color: "white" } // Nastaví farbu písma na bielu
+                        style: { color: "white" } // 
                       }}
                     size="small"
                     inputProps={{ style: { width: "60px", textAlign: "center" } }}

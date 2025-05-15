@@ -6,11 +6,19 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import HomeIcon from "@mui/icons-material/Home";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useEffect, useRef } from "react";
 
 const Architecture= () => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const videoRef = useRef(null);
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.5; 
+        }
+    }, []);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -46,20 +54,22 @@ const Architecture= () => {
                 muted
                 playsInline
                 style={{
-                    position: "absolute",
+                    position: "fixed",         
                     top: 0,
                     left: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    zIndex: -1
-                }}
+                    minWidth: "100%",          
+                    minHeight: "100%",         
+                    objectFit: "cover",        
+                    zIndex: -1,
+                    transform: "translateZ(0)", 
+                    backfaceVisibility: "hidden" 
+                  }}
             >
                 <source src="background3.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
 
-            {/* Ikona menu a nadpis vedľa nej */}
+            {/* Ikona menu*/}
             <Box sx={{ position: "absolute", top: 10, left: 10, display: "flex", alignItems: "center" }}>
                 <IconButton onClick={handleClick} sx={{ color: "white" }}>
                     <MenuIcon />
@@ -86,7 +96,7 @@ const Architecture= () => {
             </Box>
 
             <Container maxWidth="md" sx={{ pt: 10 }}>
-                {/* Úvodná karta o neurónoch */}
+                {/* Úvodná karta*/}
                 <Card sx={{ mt: 4, p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                 <Typography
                     variant="h3"
@@ -244,18 +254,20 @@ const Architecture= () => {
                 {/* Tlačidlo pre návrat na hlavnú stránku */}
                 <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: "center" }}>
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         startIcon={<ArrowBackIcon />}
-                        // Tu si doplníš referenciu
-                        onClick={() => navigate("/networks")}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/networks");
+                        }}  
                     >
                         Späť
                     </Button>
 
                     <Button
                         onClick={() => navigate("/")}
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                         startIcon={<HomeIcon />}
                     >
@@ -263,11 +275,13 @@ const Architecture= () => {
                     </Button>
 
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         endIcon={<ArrowForwardIcon />}
-                        // Tu si doplníš referenciu
-                        onClick={() => navigate("/convolution")}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/convolution");
+                        }}  
                     >
                         Ďalej
                     </Button>

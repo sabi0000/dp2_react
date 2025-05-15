@@ -5,12 +5,19 @@ import React, { useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import HomeIcon from "@mui/icons-material/Home";
+import { useEffect, useRef } from "react";
 
 const Neurons = () => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const videoRef = useRef(null);
 
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.5; // 
+        }
+    }, []);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -45,14 +52,16 @@ const Neurons = () => {
                 muted
                 playsInline
                 style={{
-                    position: "absolute",
+                    position: "fixed",         
                     top: 0,
                     left: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    zIndex: -1
-                }}
+                    minWidth: "100%",          
+                    minHeight: "100%",         
+                    objectFit: "cover",        
+                    zIndex: -1,
+                    transform: "translateZ(0)", 
+                    backfaceVisibility: "hidden" 
+                  }}
             >
                 <source src="background3.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -157,18 +166,20 @@ const Neurons = () => {
                 {/* Tlačidlo pre návrat na hlavnú stránku */}
                 <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: "center" }}>
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         startIcon={<ArrowBackIcon />}
-                        // Tu si doplníš referenciu
-                        onClick={() => navigate("/")}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/");
+                        }}
                     >
                         Späť
                     </Button>
 
                     <Button
                         onClick={() => navigate("/")}
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                         startIcon={<HomeIcon />}
                     >
@@ -176,11 +187,13 @@ const Neurons = () => {
                     </Button>
 
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         endIcon={<ArrowForwardIcon />}
-                        // Tu si doplníš referenciu
-                        onClick={() => navigate("/functions")}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/functions");
+                        }}
                     >
                         Ďalej
                     </Button>

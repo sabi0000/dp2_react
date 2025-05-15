@@ -7,6 +7,8 @@ import UploadSection from './UploadSection';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import HomeIcon from "@mui/icons-material/Home";
+import { useEffect, useRef } from "react";
+
 
 const Final = () => {
     const navigate = useNavigate();
@@ -17,7 +19,13 @@ const Final = () => {
     const [value, setValue] = useState(0);
 
     const [openPicker, setOpenPicker] = useState(false);
+    const videoRef = useRef(null);
 
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.5; // 
+        }
+    }, []);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -44,7 +52,6 @@ const Final = () => {
         formData.append('file', file);
     
         try {
-          // Pošleme POST request na Flask server
           const backendUrlPredict = `http://${window.location.hostname}:5000/predict`;
           const response = await axios.post(backendUrlPredict, formData, {
             headers: {
@@ -52,7 +59,7 @@ const Final = () => {
             },
           });
           // Nastavenie predikcie, ktorá príde zo servera
-          setPrediction(response.data);  // ← toto je OK, nemusíš meniť
+          setPrediction(response.data);  //
         } catch (error) {
           setPrediction('Chyba pri predikcii.');
         }
@@ -88,14 +95,16 @@ const Final = () => {
                 muted
                 playsInline
                 style={{
-                    position: "absolute",
+                    position: "fixed",         
                     top: 0,
                     left: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    zIndex: -1
-                }}
+                    minWidth: "100%",          
+                    minHeight: "100%",         
+                    objectFit: "cover",        
+                    zIndex: -1,
+                    transform: "translateZ(0)", 
+                    backfaceVisibility: "hidden" 
+                  }}
             >
                 <source src="background3.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -145,7 +154,6 @@ const Final = () => {
                 </Typography>
                 </Card>
 
-                {/* Biologické neuróny */}
                 <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                     <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>   
                         Využite silu AI: Predikcia diagnózy kožných lézií
@@ -182,7 +190,6 @@ const Final = () => {
                     </Typography>
                 </Card>
 
-                {/* Úvodná karta o neurónoch */}
                 <Card sx={{ mt: 4, p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
               
                 <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>   
@@ -215,9 +222,9 @@ const Final = () => {
                     value={value}
                     onChange={handleChange}
                     centered
-                    textColor="inherit" // Aby si to vedel nastylovať
+                    textColor="inherit" // 
                     TabIndicatorProps={{
-                        style: { backgroundColor: 'white' }, // Farba čiarky pod aktívnym tabom (voliteľné)
+                        style: { backgroundColor: 'white' }, //
                     }}
                     >
                     <Tab label="AKIEC" />
@@ -265,18 +272,20 @@ const Final = () => {
                 {/* Tlačidlo pre návrat na hlavnú stránku */}
                 <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: "center" }}>
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         startIcon={<ArrowBackIcon />}
-                        // Tu si doplníš referenciu
-                        onClick={() => navigate("/edges")}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/edges");
+                        }} 
                     >
                         Späť
                     </Button>
 
                     <Button
                         onClick={() => navigate("/")}
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                         startIcon={<HomeIcon />}
                     >
@@ -284,10 +293,9 @@ const Final = () => {
                     </Button>
 
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         endIcon={<ArrowForwardIcon />}
-                        // Tu si doplníš referenciu
                         onClick={() => navigate("/")}
                     >
                         Ďalej

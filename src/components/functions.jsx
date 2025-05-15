@@ -6,12 +6,19 @@ import React, { useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import HomeIcon from "@mui/icons-material/Home";
-
+import { useEffect, useRef } from "react";
 
 const Functions = () => {
     const navigate = useNavigate();
         const [anchorEl, setAnchorEl] = useState(null);
         const open = Boolean(anchorEl);
+    const videoRef = useRef(null);
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.5; // 
+        }
+    }, []);
     
         const handleClick = (event) => {
             setAnchorEl(event.currentTarget);
@@ -43,29 +50,38 @@ const Functions = () => {
             }
         };
 
+        const [inputReLU, setInputReLU] = useState("");
+        const [outputReLU, setOutputReLU] = useState(null);
+
         const handleCalculateReLU = () => {
-            const num = parseFloat(input);
+            const num = parseFloat(inputReLU);
             if (!isNaN(num)) {
-                setOutput(Math.max(0, num).toFixed(4));
+                setOutputReLU(Math.max(0, num).toFixed(4));
             } else {
-                setOutput("Zadajte platné číslo");
+                setOutputReLU("Zadajte platné číslo");
             }
         };
 
+        const [inputTanh, setInputTanh] = useState("");
+        const [outputTanh, setOutputTanh] = useState(null);
+
         const handleCalculateTanh = () => {
-            const num = parseFloat(input);
+            const num = parseFloat(inputTanh);
             if (!isNaN(num)) {
-                setOutput(Math.tanh(num).toFixed(4));
+                setOutputTanh(Math.tanh(num).toFixed(4));
             } else {
-                setOutput("Zadajte platné číslo");
+                setOutputTanh("Zadajte platné číslo");
             }
         };
+
+        const [inputSoftmax, setInputSoftmax] = useState("");
+        const [outputSoftmax, setOutputSoftmax] = useState(null);
 
         const handleSoftmaxCalculate = () => {
             try {
-                const inputArray = input.split(',').map(val => parseFloat(val.trim()));
+                const inputArray = inputSoftmax.split(',').map(val => parseFloat(val.trim()));
                 if (inputArray.some(isNaN)) {
-                    setOutput("Zadajte platné čísla oddelené čiarkou");
+                    setOutputSoftmax("Zadajte platné čísla oddelené čiarkou");
                     return;
                 }
         
@@ -73,9 +89,9 @@ const Functions = () => {
                 const sumExp = expValues.reduce((a, b) => a + b, 0);
                 const softmaxValues = expValues.map(val => (val / sumExp).toFixed(4));
         
-                setOutput(`[ ${softmaxValues.join(', ')} ]`);
+                setOutputSoftmax(`[ ${softmaxValues.join(', ')} ]`);
             } catch (err) {
-                setOutput("Chyba pri výpočte");
+                setOutputSoftmax("Chyba pri výpočte");
             }
         };
 
@@ -100,14 +116,16 @@ const Functions = () => {
                 muted
                 playsInline
                 style={{
-                    position: "absolute",
+                    position: "fixed",         
                     top: 0,
                     left: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    zIndex: -1
-                }}
+                    minWidth: "100%",          
+                    minHeight: "100%",         
+                    objectFit: "cover",        
+                    zIndex: -1,
+                    transform: "translateZ(0)", 
+                    backfaceVisibility: "hidden" 
+                  }}
             >
                 <source src="background3.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -193,20 +211,20 @@ const Functions = () => {
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Zadajte číslo"
                     sx={{
-                        input: { color: "white" }, // Farba textu v poli
-                        bgcolor: "#222", // Tmavé pozadie
-                        borderRadius: 1, // Zaoblené rohy
+                        input: { color: "white" }, // 
+                        bgcolor: "#222", // 
+                        borderRadius: 1, // 
                         mt: 2,
                         "& .MuiOutlinedInput-root": {
-                            "& fieldset": { borderColor: "#555" }, // Fixná farba ohraničenia
-                            // Removed hover and focus styles
+                            "& fieldset": { borderColor: "#555" }, // 
+                            // 
                         }
                     }}
                     InputLabelProps={{
                         sx: { 
-                            color: "white", // Biela farba labelu
-                            fontSize: "1.2rem", // Väčší text
-                            transform: "translate(14px, -25px) scale(1)", // Posunutie vyššie
+                            color: "white", // 
+                            fontSize: "1.2rem", // 
+                            transform: "translate(14px, -25px) scale(1)", // 
                         }
                     }}
 
@@ -244,24 +262,24 @@ const Functions = () => {
                     label="Vstupná hodnota"
                     variant="outlined"
                     fullWidth
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    value={inputReLU}
+                    onChange={(e) => setInputReLU(e.target.value)}
                     placeholder="Zadajte číslo"
                     sx={{
-                        input: { color: "white" }, // Farba textu v poli
-                        bgcolor: "#222", // Tmavé pozadie
-                        borderRadius: 1, // Zaoblené rohy
+                        input: { color: "white" }, // F
+                        bgcolor: "#222", // 
+                        borderRadius: 1, // 
                         mt: 2,
                         "& .MuiOutlinedInput-root": {
-                            "& fieldset": { borderColor: "#555" }, // Fixná farba ohraničenia
-                            // Removed hover and focus styles
+                            "& fieldset": { borderColor: "#555" }, // 
+                            // 
                         }
                     }}
                     InputLabelProps={{
                         sx: { 
-                            color: "white", // Biela farba labelu
-                            fontSize: "1.2rem", // Väčší text
-                            transform: "translate(14px, -25px) scale(1)", // Posunutie vyššie
+                            color: "white", // 
+                            fontSize: "1.2rem", // 
+                            transform: "translate(14px, -25px) scale(1)", // 
                         }
                     }}
 
@@ -269,9 +287,9 @@ const Functions = () => {
                 <Button variant="contained" color="primary" onClick={handleCalculateReLU} sx={{ mt: 2 }}>
                     Vypočítať
                 </Button>
-                {output !== null && (
+                {outputReLU !== null && (
                     <Typography variant="h5" sx={{ mt: 2 }}>
-                        Výstup: {output}
+                        Výstup: {outputReLU}
                     </Typography>
                 )}
             </Card>
@@ -299,24 +317,24 @@ const Functions = () => {
                     label="Vstupná hodnota"
                     variant="outlined"
                     fullWidth
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    value={inputTanh}
+                    onChange={(e) => setInputTanh(e.target.value)}
                     placeholder="Zadajte číslo"
                     sx={{
-                        input: { color: "white" }, // Farba textu v poli
-                        bgcolor: "#222", // Tmavé pozadie
-                        borderRadius: 1, // Zaoblené rohy
+                        input: { color: "white" }, // 
+                        bgcolor: "#222", // 
+                        borderRadius: 1, // 
                         mt: 2,
                         "& .MuiOutlinedInput-root": {
-                            "& fieldset": { borderColor: "#555" }, // Fixná farba ohraničenia
-                            // Removed hover and focus styles
+                            "& fieldset": { borderColor: "#555" }, // 
+                            // 
                         }
                     }}
                     InputLabelProps={{
                         sx: { 
-                            color: "white", // Biela farba labelu
-                            fontSize: "1.2rem", // Väčší text
-                            transform: "translate(14px, -25px) scale(1)", // Posunutie vyššie
+                            color: "white", // 
+                            fontSize: "1.2rem", // 
+                            transform: "translate(14px, -25px) scale(1)", // 
                         }
                     }}
 
@@ -324,9 +342,9 @@ const Functions = () => {
                 <Button variant="contained" color="primary" onClick={handleCalculateTanh} sx={{ mt: 2 }}>
                     Vypočítať
                 </Button>
-                {output !== null && (
+                {outputTanh !== null && (
                     <Typography variant="h5" sx={{ mt: 2 }}>
-                        Výstup: {output}
+                        Výstup: {outputTanh}
                     </Typography>
                 )}
             </Card>
@@ -358,8 +376,8 @@ const Functions = () => {
                         label="Vstupné hodnoty"
                         variant="outlined"
                         fullWidth
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
+                        value={inputSoftmax}
+                        onChange={(e) => setInputSoftmax(e.target.value)}
                         placeholder="Zadajte čísla oddelené čiarkou (napr. 2, 1, 0)"
                         sx={{
                             input: { color: "white" },
@@ -383,9 +401,9 @@ const Functions = () => {
                         Vypočítať
                     </Button>
 
-                    {output !== null && (
+                    {outputSoftmax !== null && (
                         <Typography variant="h5" sx={{ mt: 2 }}>
-                            Výstup: {output}
+                            Výstup: {outputSoftmax}
                         </Typography>
                     )}
             </Card>
@@ -395,18 +413,20 @@ const Functions = () => {
                 {/* Tlačidlo pre návrat na hlavnú stránku */}
                 <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: "center" }}>
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         startIcon={<ArrowBackIcon />}
-                        // Tu si doplníš referenciu
-                        onClick={() => navigate("/neurons")}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/neurons");
+                        }}
                     >
                         Späť
                     </Button>
 
                     <Button
                         onClick={() => navigate("/")}
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                         startIcon={<HomeIcon />}
                     >
@@ -414,11 +434,13 @@ const Functions = () => {
                     </Button>
 
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         color="secondary"
                         endIcon={<ArrowForwardIcon />}
-                        // Tu si doplníš referenciu
-                        onClick={() => navigate("/networks")}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            navigate("/networks");
+                        }}
                     >
                         Ďalej
                     </Button>

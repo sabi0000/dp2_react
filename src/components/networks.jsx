@@ -278,7 +278,7 @@ const Networks = () => {
 
                     <Typography variant="body1" paragraph align="left">
                     <strong>Počet vrstiev:</strong> Určuje hĺbku siete a jej schopnosť modelovať komplexné vzory. Viac vrstiev môže viesť k lepším výsledkom, ale aj k vyššej výpočtovej náročnosti. <br />
-                    <strong>Počet neurónov v každej vrstve:</strong> Ovplyvňuje kapacitu siete a jej schopnosť učiť sa z dát. Príliš málo neurónov môže viesť k nedostatočnému učeniu, zatiaľ čo príliš veľa neurónov môže viesť k preučeniu.
+                    <strong>Počet neurónov v každej vrstve:</strong> Ovplyvňuje kapacitu siete a jej schopnosť učiť sa z dát. Príliš málo neurónov môže viesť k nedostatočnému učeniu, zatiaľ čo príliš veľa neurónov môže viesť k pretrénovaniu.
                     </Typography>
 
                     <Typography variant="h5" sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
@@ -414,10 +414,10 @@ const Networks = () => {
 
                 <Card sx={{ p: 4, bgcolor: "#111", color: "white", borderRadius: 2, textAlign: "center", mb: 2 }}>
                     <Typography variant="h4" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
-                        Riziko preučenia (overfitting):
+                        Riziko pretrénovania (overfitting):
                     </Typography>
                     <Typography variant="body1" paragraph align="left">
-                        Pri návrhu architektúry siete je dôležité zvážiť riziko preučenia. Preučenie nastáva, keď sa sieť príliš dobre naučí trénovacie dáta a stráca schopnosť generalizovať na nové, neznáme dáta.<br/>
+                        Pri návrhu architektúry siete je dôležité zvážiť riziko pretrénovania. Pretrénovanie nastáva, keď sa sieť príliš dobre naučí trénovacie dáta a stráca schopnosť generalizovať na nové, neznáme dáta.<br/>
                         Pri používaní tejto aplikácie je dôležité experimentovať s rôznymi parametrami a sledovať výkon siete, aby sa našla optimálna architektúra pre danú úlohu.
                     </Typography>
                 </Card>
@@ -442,7 +442,7 @@ const Networks = () => {
                         Keď sieť prejde cez všetky obrázky v zbierke, jedna epocha je dokončená.<br/>
                         Počas každej epochy sa sieť postupne učí z trénovacích dát a upravuje svoje váhy, aby minimalizovala chyby.<br/>    
                         Opakovaným prechádzaním dát sa sieť postupne zlepšuje v rozpoznávaní vzorov. <br/>  
-                        Príliš málo epoch môže viesť k nedostatočnému učeniu, zatiaľ čo príliš veľa epoch môže viesť k preučeniu (overfitting). <br/>  
+                        Príliš málo epoch môže viesť k nedostatočnému učeniu, zatiaľ čo príliš veľa epoch môže viesť k pretrénovaniu (overfitting). <br/>  
                         Správny počet epoch je kľúčový pre dosiahnutie optimálneho výkonu siete.
                     </Typography>
                 </Card>
@@ -463,8 +463,8 @@ const Networks = () => {
                     <Typography variant="body1" paragraph align="left">
                         <strong>Presnosť (Accuracy):</strong> Meria, koľko predikcií modelu je správnych.<br/>
                         <strong>Strata (Loss):</strong> Meria, ako dobre model predpovedá výstupy, nižšia strata znamená lepší výkon modelu.<br/>
-                        <strong>Validačná presnosť (Validation Accuracy):</strong> Meria presnosť modelu na validačnej sade dát, používa sa na monitorovanie generalizačnej schopnosti modelu a na detekciu preučenia.<br/>
-                        <strong>Validačná strata (Validation Loss):</strong> Meria stratu modelu na validačnej sade dát, používa sa na monitorovanie generalizačnej schopnosti modelu a na detekciu preučenia.
+                        <strong>Validačná presnosť (Validation Accuracy):</strong> Meria presnosť modelu na validačnej sade dát, používa sa na monitorovanie generalizačnej schopnosti modelu a na detekciu pretrénovania.<br/>
+                        <strong>Validačná strata (Validation Loss):</strong> Meria stratu modelu na validačnej sade dát, používa sa na monitorovanie generalizačnej schopnosti modelu a na detekciu pretrénovania.
                     </Typography>
 
                     <Typography variant="h5" gutterBottom sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
@@ -473,7 +473,7 @@ const Networks = () => {
 
                     <Typography variant="body1" paragraph align="left">
                         <strong>Trénovacia sada (Training Set):</strong> Model sa z týchto dát učí. Predtavujú väčšinu datasetu. Zvyčajne okolo 75 % dát. <br/>
-                        <strong>Validačná sada (Validation Set):</strong> Používa sa na monitorovanie výkonu modelu počas tréningu. Slúži na detegovanie preučenia. Tvoria zhruba 25 % datasetu<br/>
+                        <strong>Validačná sada (Validation Set):</strong> Používa sa na monitorovanie výkonu modelu počas tréningu. Slúži na detegovanie pretrénovania. Tvoria zhruba 25 % datasetu<br/>
                     </Typography>
 
                 </Card>
@@ -485,7 +485,7 @@ const Networks = () => {
                     <Typography variant="body1" paragraph align="left">
                         <strong>Navrhnite svoju sieť:</strong> Zadajte, koľko vrstiev a neurónov chcete použiť.<br/>
                         <strong>Sledujte tréning v reálnom čase:</strong> Sledujte, ako sa vaša sieť učí, vďaka prehľadným grafom strát a presností.<br/>
-                        <strong>Analyzujte a optimalizujte: </strong> Zistite, či sa vaša sieť učí správne, alebo či sa nepreučuje. Upravte parametre a sledujte, ako sa zlepšuje.<br/>
+                        <strong>Analyzujte a optimalizujte: </strong> Zistite, či sa vaša sieť učí správne, alebo či nedochádza k pretrénovaniu. Upravte parametre a sledujte, ako sa zlepšuje.<br/>
                         <strong>Epochy pod kontrolou:</strong> Sledujte, ako sa mení výkon vašej siete v závislosti od počtu epoch, a nájdite optimálny počet pre vašu úlohu.<br/>
                     </Typography>
                     <Typography variant="h5" sx={{ borderBottom: "2px solid #00bcd4", display: "inline-block", pb: 1 }}>
